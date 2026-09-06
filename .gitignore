@@ -1,0 +1,30 @@
+# Environment variables
+.env
+.env.local
+*.pyc
+__pycache__/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+venv/
+env/
+node_modules/
+
+# Logs
+*.log
+
+# Generated files (but keep the folder)
+linkedin_posts/*.json
+linkedin_posts/*.png
+linkedin_posts/*.log
+!linkedin_posts/.gitkeep
