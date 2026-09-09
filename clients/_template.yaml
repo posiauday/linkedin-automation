@@ -1,0 +1,32 @@
+# Copy this file to clients/<slug>.yaml — the filename is the client slug.
+#   cp clients/_template.yaml clients/acme.yaml
+#   python run.py generate --client acme -n 5
+
+name: "Jane Doe"
+role: "Founder"
+niche: "B2B SaaS pricing"
+audience: "SaaS founders doing $10k-100k MRR"
+tone: "direct, specific, slightly contrarian, writes like they talk"
+goal: "get inbound DMs from founders who want pricing help"
+
+# Optional. Leave empty and the model picks topics from the niche.
+topics:
+  - "the pricing mistake that costs early SaaS the most revenue"
+  - "why usage-based pricing broke for us and what we moved to"
+  - "how to run a price increase without losing your best accounts"
+  - "what founders get wrong reading their own churn numbers"
+  - "the discount policy that quietly sets your floor price"
+
+hashtags: ["SaaS", "Pricing", "B2B", "Founders"]
+
+# Words this author would never say. The generator is told to avoid them.
+banned_phrases: ["game-changer", "unlock", "leverage", "in today's landscape"]
+
+image_style: >
+  clean minimalist editorial illustration, flat vector, generous whitespace,
+  muted navy and warm grey palette, no text in image
+
+# Which environment variables hold this client's credentials. Give each client
+# their own so one repo can serve many accounts.
+linkedin_token_env: "LINKEDIN_ACCESS_TOKEN"
+linkedin_person_env: "LINKEDIN_PERSON_ID"

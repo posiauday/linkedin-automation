@@ -1,0 +1,22 @@
+name: "Uday Posia"
+role: "Automation consultant"
+niche: "AI automation for small teams"
+audience: "founders and marketers who post on LinkedIn but hate writing"
+tone: "direct, practical, shows the actual mechanics, no hype"
+goal: "get inbound DMs asking to set this up for them"
+
+topics:
+  - "what I learned automating 30 days of LinkedIn posts"
+  - "why most AI-written LinkedIn posts are obvious in the first line"
+  - "the real cost of running an AI content pipeline (actual numbers)"
+  - "posting consistently beats posting brilliantly, and the math on why"
+  - "the part of content automation you should never automate"
+  - "what a content engine looks like when it is built properly"
+  - "how to keep an AI writing in your voice instead of LinkedIn voice"
+
+hashtags: ["AIAutomation", "ContentStrategy", "LinkedInTips", "Founders"]
+banned_phrases: ["game-changer", "unlock", "leverage", "dive deep", "synergy"]
+
+image_style: >
+  clean minimalist editorial illustration, flat vector, generous whitespace,
+  muted navy and warm grey palette, no text in image

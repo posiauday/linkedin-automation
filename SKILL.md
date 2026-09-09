@@ -1,249 +1,93 @@
 ---
-name: LinkedIn Post Generator for Domain Marketing
-description: Generate branded LinkedIn posts with image prompts for domain/web services. Use when creating social media content, generating engagement posts, or building a content calendar for LinkedIn automation.
+name: linkedin-post-writer
+description: Write LinkedIn posts that sound like a specific human rather than a content marketing team. Use when drafting LinkedIn posts, building a content calendar, or rewriting a post that reads as AI-generated.
 ---
 
-# LinkedIn Post Generator for Domain Marketing
+# LinkedIn Post Writer
 
-## Instructions
+This is the same writing specification the engine in this repo uses. Load it
+when writing posts by hand, or when editing what the engine produced.
 
-You are a LinkedIn content strategist specializing in domain, web design, and digital services marketing.
+## Structure
 
-### Post Generation Framework
+A post is three parts and nothing else:
 
-When generating LinkedIn posts:
+1. **Hook** — one line, under 120 characters. It is the only thing shown before
+   "see more", so it carries the entire post. A specific claim, a number, or a
+   moment. Not a question, not a label, not a colon-list preamble.
+2. **Body** — 90 to 180 words in short paragraphs with blank lines between them.
+   One idea per paragraph. Mobile screens are narrow; a wall of text is skipped.
+3. **Close** — one genuine question. Genuine means you would be interested in the
+   answer, not "Thoughts? 👇".
 
-#### 1. **Post Structure** (Always Follow)
-- **Hook** (lines 1-2): Stop-scroll sentence about pain point or surprising stat
-- **Body** (3-5 bullet points): Value propositions, insights, or tips
-- **Personal Touch**: Short story, personal lesson, or take on the topic
-- **CTA** (Call-to-Action): Clear ask (visit link, comment, DM, etc.)
-- **Hashtags**: 5-7 relevant (mix of niche + broad)
+Then 3-5 hashtags. More than five reads as spam.
 
-#### 2. **Content Pillars** (Rotate These)
-- **Educational**: Tips, trends, how-tos about domains/web design
-- **Opinion**: Takes on industry trends, contrarian views
-- **Success Stories**: Client wins, case studies, before/after
-- **Behind-the-Scenes**: Your process, tools you use, learnings
-- **Engagement**: Questions, polls, discussion starters
+## Hard rules
 
-#### 3. **Image Prompt Generation**
-Always output a DALL-E/Midjourney compatible prompt for each post:
-- **Style**: Modern, minimalist, professional
-- **Elements**: Relevant to topic (dashboards, design tools, metrics, etc.)
-- **Format**: 1200x630px (LinkedIn optimal)
-- **Tone**: Bright, clean, modern aesthetic
+Never open with any of these, or a variant:
 
-Example format:
-```
-"[Subject], [Style], [Elements], [Color palette], [Composition], professional photography, high quality, 1200x630px ratio"
-```
+- "In today's fast-paced world"
+- "Let's be honest"
+- "Here's the thing"
+- "I've been thinking a lot about"
+- "Unpopular opinion:"
+- "Most people get X wrong"
 
-#### 4. **Posting Strategy**
-- **Frequency**: 3-5 posts per week
-- **Best Times**: Tuesday-Thursday, 8-10 AM in target timezone
-- **Engagement**: Post should encourage 1+ of: comments, shares, reactions
-- **Consistency**: Maintain voice and visual style
+Never use: leverage (as a verb), unlock, game-changer, dive deep, synergy,
+robust, seamless, "in the realm of", "it's not X, it's Y".
 
-#### 5. **Domain/Service Focus**
-Tailor content to emphasize:
-- Domain value and strategy
-- Web design and user experience
-- Digital presence optimization
-- SEO and online visibility
-- Professional online branding
+No emoji bullet lists. At most one emoji in a whole post, and usually zero.
 
-### Output Format
+## Specificity
 
-Always format outputs as:
+Every claim gets a number, a named example, or a concrete scenario. If you
+cannot be specific, cut the claim rather than padding it.
 
-```
-🎯 POST COPY:
-[LinkedIn post text here]
+Weak: "Pricing mistakes cost SaaS companies a lot of revenue."
+Strong: "We charged $49 for two years because it felt safe. Moving to $149 lost
+us four customers out of ninety."
 
-📸 IMAGE PROMPT:
-[DALL-E/Midjourney prompt]
+Never invent statistics, case studies, or client results. A made-up number that
+gets challenged in the comments is worse than no number.
 
-⏰ SUGGESTED POSTING TIME:
-[Day and time in HH:MM format]
+## Voice
 
-💡 ENGAGEMENT HOOK:
-[What should spark engagement - comment bait or question]
-```
+Write at an 8th grade reading level. Short sentences. Cut adverbs. Contractions
+are fine. The test is whether the author would be comfortable being quoted on
+every line.
 
----
+Match the author on:
 
-## Examples
+- **Tone** — how they actually talk, including what they are blunt about
+- **Banned phrases** — words this person would never say
+- **Audience** — who they are writing for, not who they wish read it
+- **Goal** — what a good post gets them
 
-### Example 1: Educational Post
+## Content pillars
 
-**Input:** "Generate a LinkedIn post about why domain extensions matter"
+Rotate so the feed does not feel like one note:
 
-**Output:**
+- **Experience** — something that happened, what it cost, what changed
+- **Correction** — a common belief in the field that is wrong, with evidence
+- **Mechanics** — how something actually works, shown rather than described
+- **Observation** — a pattern seen repeatedly across clients or projects
 
-🎯 POST COPY:
-"I see founders choose domains in 5 minutes, then spend months regretting it.
+Avoid pure motivation and pure promotion. Both get scrolled past.
 
-Your domain isn't just a URL—it's your first impression:
+## Image prompts
 
-🚀 .io signals tech/startup credibility
-📱 .co is trendy but might confuse mobile users
-💼 .com still carries weight in B2B (trust factor)
-🌍 Geographic domains (.uk, .ca) build local authority
-💪 New extensions (.ai, .dev) can differentiate your brand
+Describe an illustration, never text. LinkedIn images render small, and
+AI-generated text in images is almost always garbled.
 
-Choosing the right domain extension = 10-15% boost in early trust metrics (yes, we've tested this).
+Format: subject, style, composition, palette, plus "no text in image".
 
-What domain extension do you regret? 👇
+Example: "single chair in an empty conference room, flat vector editorial
+illustration, generous whitespace, muted navy and warm grey, no text in image"
 
-#DomainStrategy #WebDesign #Branding #Startups #DigitalMarketing"
+## Self-check before publishing
 
-📸 IMAGE PROMPT:
-"Split-screen comparison showing different domain extensions (.com, .io, .ai) with their associated trust badges and visual cues, modern minimalist design, clean white background, professional, high quality, 1200x630px"
-
-⏰ SUGGESTED POSTING TIME:
-Tuesday, 09:00 AM
-
-💡 ENGAGEMENT HOOK:
-Ask about their domain regrets to spark comments
-
----
-
-### Example 2: Opinion Post
-
-**Input:** "Generate a post about why cheap domains lead to expensive problems"
-
-**Output:**
-
-🎯 POST COPY:
-"Here's an unpopular take: Saving $8/year on a domain costs you $8,000+ in the long run.
-
-I've watched this pattern 50+ times:
-
-💔 Founder buys domain on GoDaddy during a sale
-⏰ 3 years later: Domain renewal auto-charged at $15/year (they forgot)
-😱 Can't remember password, loses access for 6 months
-📉 Revenue drops 20% (email, site, credibility all affected)
-
-The math is brutal:
-- Premium domain + proper management = $15/year
-- Cheap domain + recovery crisis = $5,000+ in lost revenue
-
-Your domain is real estate. Treat it like it.
-
-Reply: What's the cheapest decision that cost you the most? Let's learn together.
-
-#Entrepreneurship #SmallBusiness #DomainManagement #FYI #LessonLearned"
-
-📸 IMAGE PROMPT:
-"Cost-benefit infographic showing cheap domain icon on left with fire/warning symbols, premium domain icon on right with shield and checkmark, red vs green color coding, professional data visualization style, clean modern design, 1200x630px"
-
-⏰ SUGGESTED POSTING TIME:
-Wednesday, 09:30 AM
-
-💡 ENGAGEMENT HOOK:
-"What's the cheapest decision..." creates vulnerability and asks for their stories
-
----
-
-### Example 3: Behind-the-Scenes Post
-
-**Input:** "Generate a post about your domain auditing process"
-
-**Output:**
-
-🎯 POST COPY:
-"Here's exactly how we audit a domain portfolio in 2025:
-
-Step 1: Domain Health Check ✅
-→ SSL certificate status
-→ DNS record configuration
-→ Email deliverability scores
-
-Step 2: SEO Foundation 🔍
-→ Page speed metrics
-→ Mobile usability
-→ Core Web Vitals
-
-Step 3: Expiration Risk 🚨
-→ Auto-renewal settings (most missed)
-→ Whois privacy protection
-→ Registrar reputation
-
-Step 4: Competitive Positioning 💪
-→ Brandability assessment
-→ Market perception
-→ Extension strategy
-
-Usually we find 2-3 critical issues per portfolio. Most preventable.
-
-If you want your free domain audit checklist, drop a comment 👇
-
-#WebDesign #SEO #DomainManagement #DigitalAudit #Technical"
-
-📸 IMAGE PROMPT:
-"Detailed checklist or audit process flowchart with checkmarks, modern UI design, tech aesthetic, dashboard-like visual, blues and greens, professional mockup style, clean minimalist, 1200x630px"
-
-⏰ SUGGESTED POSTING TIME:
-Thursday, 10:00 AM
-
-💡 ENGAGEMENT HOOK:
-Free resource offer (audit checklist) drives comments
-
----
-
-## Brand Voice Guidelines
-
-- **Tone**: Expert but approachable, educational but opinionated
-- **Language**: Clear jargon (use it, but explain), avoid hype
-- **Personality**: Problem-solver, data-informed, no BS
-- **Perspective**: Share what you've learned (50+ audits, 100+ clients, etc.)
-
-## Hashtag Strategy
-
-- Always include: #DomainStrategy, #WebDesign, #DigitalMarketing
-- Rotate industry: #SEO, #Branding, #OnlinePresence, #TechLeadership
-- Trending: #2025Trends, #Entrepreneurship, #SmallBusiness
-- Niche: #DomainExtensions, #WebDevelopment
-
-## Image Creation Tips
-
-- Use consistent color palette (suggestion: Blue #0066CC + White + Light Gray)
-- Always include text overlay with main idea
-- Use professional mockups or data visualizations
-- Optimize for mobile viewing (center text, large fonts)
-- Test: Post at 50% scale to verify text is readable on mobile
-
----
-
-## Testing Checklist
-
-Before posting, verify:
-- ✅ Post under 1300 characters (mobile readable)
-- ✅ First line hooks reader (emoji + question or stat)
-- ✅ CTA is clear and specific
-- ✅ Hashtags are relevant (not spammy)
-- ✅ Image matches post topic
-- ✅ No broken links
-- ✅ Voice consistent with brand
-
----
-
-## Rotation Schedule (Weekly Content Plan)
-
-- **Monday**: Engagement/Question post (low effort, high comments)
-- **Tuesday**: Educational/Tips post (demonstrate expertise)
-- **Wednesday**: Opinion/Take post (show personality)
-- **Thursday**: Behind-the-Scenes post (build trust)
-- **Friday**: Success Story or Industry News take (end week strong)
-
----
-
-## Notes for Automation Script
-
-When this Skill is called by automation:
-1. Provide date/topic to generate
-2. Output ONLY in the specified format (POST COPY, IMAGE PROMPT, TIME, HOOK)
-3. Rotate content pillars to avoid repetition
-4. Vary hook types to maintain audience interest
-5. Generate hashtags dynamically based on topic
+- Does the first line work alone, with the rest hidden?
+- Is there a number, name, or specific scenario in the first three lines?
+- Would the author be comfortable being quoted on every sentence?
+- Does it repeat a post from the last month?
+- Read it aloud. Does it sound like a person talking?
