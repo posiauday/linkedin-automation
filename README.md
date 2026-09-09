@@ -8,7 +8,8 @@ Running cost: about **$1.30/month** per account. GitHub Actions does the hosting
 for free.
 
 > **Trying to make money with this?** [GTM.md](GTM.md) has the market research,
-> pricing, funnel and channel plan. [SALES_PLAYBOOK.md](SALES_PLAYBOOK.md) has the
+> pricing, funnel and channel plan for both revenue tracks — selling to
+> individuals, and licensing to agencies who run many client accounts. [SALES_PLAYBOOK.md](SALES_PLAYBOOK.md) has the
 > target list, scripts and delivery checklist. Read GTM first — it explains why
 > this is priced as ghostwriting and not as software.
 

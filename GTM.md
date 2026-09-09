@@ -206,6 +206,97 @@ one referral — referrals are the channel that eventually replaces all of this.
 
 ---
 
+## 8. The agency track (second revenue path)
+
+The service track sells to one person for their own profile. This one sells to
+an agency that already has clients, and it is a bigger ticket per sale.
+
+### Why it works
+
+Agencies buy this category already. The market rates:
+
+| What agencies pay | Price | Source |
+|---|---|---|
+| White-label agency tier | $197-$497/mo | Stammer, Lety, GoHighLevel |
+| Unlimited sub-accounts tier | up to $2,497/mo | Ringlyn |
+| Per-seat platforms | from $49/mo | various |
+| What they resell it at | ~$297/mo per client | GoHighLevel reference case |
+
+Two facts make the sale short:
+
+1. **Break-even is 2-4 clients.** An agency with an existing roster is profitable
+   in month one, so there is no long payback conversation.
+2. **The pain is measured.** Roughly 40 minutes of context-switching per post,
+   4-5 hours a week on manual workflows. You are selling back their Friday.
+
+Agencies charge their clients $2,000-10,000/mo and owe 15-20 posts a month
+against it. Content volume is a cost centre for them. That is the wedge.
+
+### The offer
+
+| Tier | Price | For |
+|---|---|---|
+| **Studio** | $297/mo | up to 5 client accounts |
+| **Agency** | $597/mo | up to 20 accounts, white-labelled dashboard |
+| **Install** | $1,500 one-time | set up on their own infrastructure, they own it |
+
+One Agency sale at $597 clears more than half the $1,000 target in a single
+conversation, and it recurs. The Install tier exists for agencies that refuse
+per-seat pricing on principle — some do, and $1,500 up front beats losing them.
+
+Price against their saving, not your cost. An agency with 10 clients spending
+4 hours a week on content is spending roughly $2,000/mo of someone's time.
+$597 is obviously worth it. Never mention that your API cost is $13.
+
+### What you demo
+
+The dashboard, not the CLI. `python dashboard.py --rate 297` produces the view
+an agency owner cares about: every client, what is published, what is waiting on
+approval, and the margin line. Send that page. It is the product to them.
+
+Then the two things that matter operationally:
+
+- `REQUIRE_APPROVAL=true` — nothing reaches a client's feed unreviewed. This is
+  the first objection every agency raises and the answer is one env var.
+- Per-client credentials — each client profile names its own token variables, so
+  accounts cannot cross. The second objection, answered.
+
+### Finding them
+
+Small and mid-size agencies, 5-50 people, doing social or B2B marketing. Signals
+that one is a fit: they publish client work on LinkedIn, they advertise
+"thought leadership" or "executive branding" as a service, and their own founder
+posts inconsistently.
+
+The opening is different from the service track. You are not sending them five
+posts about their own business. Send this instead:
+
+> I built a content engine that runs LinkedIn posting for multiple client
+> accounts out of one place — generation, approval queue, publishing, per-client
+> voice profiles. Here's the operator view: [dashboard link]
+>
+> You're running content for [n] clients. If that's costing your team hours a
+> week, this replaces most of it. Worth ten minutes?
+
+Where to find them: LinkedIn search for agency founders, agency-owner
+communities, and the local business network. Referrals matter more here — one
+agency owner knows twenty others, and this category spreads by word of mouth.
+
+### Which track to run first
+
+Run **both**, because they cost you nothing extra — the product is the same
+code and the same hour of your evening.
+
+The service track closes faster and smaller. The agency track closes slower and
+bigger, and one sale is recurring revenue that does not churn when a single
+person loses interest in posting.
+
+If you only have energy for one tomorrow: **service track, warm list.** It is the
+shortest path to the first dollar. Start the agency conversations in week two,
+once you have one client's results to point at.
+
+---
+
 ## Sources
 
 - [LinkedIn ghostwriter cost 2026 — Windmill Growth](https://windmillgrowth.com/blogseo/linkedin-ghostwriter-cost)
@@ -217,3 +308,8 @@ one referral — referrals are the channel that eventually replaces all of this.
 - [Lead magnet conversion benchmarks 2026 — Digital Applied](https://www.digitalapplied.com/blog/lead-magnet-conversion-benchmarks-2026-b2b-data-reference)
 - [Selling digital products on Gumroad 2026 — MyDesigns](https://mydesigns.io/blog/gumroad-for-selling-digital-products/)
 - [What sells best on Gumroad 2026 — InsightRaider](https://insightraider.com/en/answers/what-digital-products-sell-best-on-gumroad)
+- [White-label AI tools for agencies 2026 — Pickaxe](https://pickaxe.co/post/white-label-ai-tools-for-agencies)
+- [White-label AI agent pricing 2026 — WildRun AI](https://wildrunai.com/blog/white-label-ai-agent-pricing-2026)
+- [White-label AI marketing services for agencies — ALM Corp](https://almcorp.com/blog/white-label-ai-marketing-services-agencies-2026-guide/)
+- [Social media management pricing 2026 — Pitchsite](https://pitchsite.io/guides/social-media-management-pricing)
+- [Social media marketing costs 2026 — Digital Applied](https://www.digitalapplied.com/blog/social-media-marketing-costs-2026-pricing-guide)
