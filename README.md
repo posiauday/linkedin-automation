@@ -7,9 +7,10 @@ out of one repo, so it works as a product you sell, not just a script you use.
 Running cost: about **$1.30/month** per account. GitHub Actions does the hosting
 for free.
 
-> **Trying to make money with this? Read [SALES_PLAYBOOK.md](SALES_PLAYBOOK.md) first.**
-> It has the pricing, the target list, the outreach scripts, and honest numbers
-> on what to expect.
+> **Trying to make money with this?** [GTM.md](GTM.md) has the market research,
+> pricing, funnel and channel plan. [SALES_PLAYBOOK.md](SALES_PLAYBOOK.md) has the
+> target list, scripts and delivery checklist. Read GTM first — it explains why
+> this is priced as ghostwriting and not as software.
 
 ---
 
@@ -59,6 +60,7 @@ Tokens expire after 60 days. Refresh them or publishing stops silently.
 | `run.py run -c SLUG` | Generate one and publish it |
 | `run.py whoami -c SLUG` | Look up the LinkedIn person ID for a token |
 | `sample.py --name ... --niche ...` | Generate a free sample page for a prospect |
+| `teardown.py --file post.txt` | Rewrite an existing post and explain what changed |
 
 Publishing is off unless `ENABLE_LINKEDIN_POSTING=true`. Every command is a dry
 run until you flip that.
@@ -77,6 +79,10 @@ python sample.py --name "Sarah Chen" --role "Fractional CMO" \
 
 Host the resulting HTML anywhere with a link, paste the link into the DM, send.
 Giving away real work before asking for money is what makes cold outreach work.
+
+`teardown.py` is the other half: paste in a post someone already published and it
+returns a rewrite plus a breakdown of each change. Use it in a DM as proof, or
+publish the teardown yourself as content.
 
 Adding a paying client:
 
@@ -153,6 +159,7 @@ own account. Never ask for anyone's password.
 ```
 run.py                  CLI
 sample.py               prospect sample generator (outreach)
+teardown.py             rewrite someone's post + explain the changes
 engine/
   config.py             settings + client profile loading
   generator.py          Claude post generation
@@ -161,8 +168,10 @@ engine/
   store.py              post archive and dedup history
 clients/                one YAML per account
 linkedin_posts/<slug>/  generated posts
-samples/                prospect sample pages
-SALES_PLAYBOOK.md       pricing, targeting, scripts, delivery checklist
+samples/                prospect sample pages and teardowns
+sales/index.html        the service sales page
+GTM.md                  market research, pricing, funnel, channels, ads
+SALES_PLAYBOOK.md       targeting, scripts, objections, delivery checklist
 SKILL.md                the writing rules, as a Claude skill
 ```
 
