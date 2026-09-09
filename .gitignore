@@ -30,3 +30,6 @@ linkedin_posts/**/*.png
 
 # Prospect samples are per-outreach, not project state.
 samples/
+
+# Generated ops dashboard (regenerate with: python dashboard.py)
+dashboard.html

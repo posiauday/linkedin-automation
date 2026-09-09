@@ -45,6 +45,9 @@ class Settings:
     )
     generate_images: bool = field(default_factory=lambda: _flag("ENABLE_IMAGE_GENERATION", True))
     publish: bool = field(default_factory=lambda: _flag("ENABLE_LINKEDIN_POSTING", False))
+    # Agencies publishing on behalf of their own clients turn this on so nothing
+    # reaches a client's feed without a human approving it first.
+    require_approval: bool = field(default_factory=lambda: _flag("REQUIRE_APPROVAL", False))
 
     def require_claude(self) -> None:
         if not self.claude_api_key:

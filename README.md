@@ -56,15 +56,34 @@ Tokens expire after 60 days. Refresh them or publishing stops silently.
 | `run.py clients` | List configured clients and their post counts |
 | `run.py generate -c SLUG -n 5` | Write 5 posts to `linkedin_posts/SLUG/`, publish nothing |
 | `run.py list -c SLUG` | Show queued, published and failed posts |
+| `run.py approve -c SLUG --id ID` | Approve a post (omit `--id` to approve all queued) |
+| `run.py reject -c SLUG --id ID` | Un-approve a post |
 | `run.py publish -c SLUG` | Publish the oldest queued post |
 | `run.py run -c SLUG` | Generate one and publish it |
 | `run.py whoami -c SLUG` | Look up the LinkedIn person ID for a token |
 | `sample.py --name ... --niche ...` | Generate a free sample page for a prospect |
 | `teardown.py --file post.txt` | Rewrite an existing post and explain what changed |
 | `batch.py prospects.csv` | Generate samples + DMs for a whole prospect list at once |
+| `dashboard.py --rate 297` | Ops view of every client: pipeline, approval queue, margin |
 
 Publishing is off unless `ENABLE_LINKEDIN_POSTING=true`. Every command is a dry
 run until you flip that.
+
+Set `REQUIRE_APPROVAL=true` and nothing publishes until a human approves it. Turn
+this on whenever you are posting to someone else's account.
+
+### Running this for an agency
+
+The engine is already multi-tenant, which is the expensive part of what agencies
+pay for. `dashboard.py` is the operator view — every client, what is published,
+what is waiting on approval, and what it cost:
+
+```bash
+python dashboard.py --rate 297     # margin at $297/client/month
+```
+
+It writes `dashboard.html` from the post archive. No server and no database:
+regenerate it whenever you want a current picture.
 
 ---
 
@@ -173,6 +192,7 @@ run.py                  CLI
 sample.py               prospect sample generator (outreach)
 teardown.py             rewrite someone's post + explain the changes
 batch.py                whole prospect list -> samples + send worksheet
+dashboard.py            agency ops view across all clients
 engine/
   config.py             settings + client profile loading
   generator.py          Claude post generation

@@ -6,6 +6,7 @@
   python run.py publish  --client acme          # publish the oldest unpublished post
   python run.py run      --client acme          # generate one and publish it
   python run.py list     --client acme          # show what is queued
+  python run.py approve  --client acme --id 3f2a  # approve one post (or all, no --id)
 """
 
 from __future__ import annotations
@@ -79,7 +80,14 @@ def cmd_publish(args, settings: Settings) -> int:
     client = Client.load(args.client)
     store = Store(client)
 
-    pending = [p for p in store.load_all() if not p.published and not p.error]
+    pending = store.pending_publish()
+    if settings.require_approval:
+        pending = [p for p in pending if p.approved]
+        if not pending:
+            print("Nothing approved to publish. Approve a post first:")
+            print(f"  python run.py list --client {client.slug}")
+            print(f"  python run.py approve --client {client.slug} --id <id>")
+            return 1
     if not pending:
         print("Nothing queued to publish. Run 'generate' first.")
         return 1
@@ -123,11 +131,44 @@ def cmd_list(args, settings: Settings) -> int:
     if not posts:
         print(f"No posts yet for {client.name}.")
         return 0
-    print(f"{client.name}: {len(posts)} post(s)\n")
+    spend = sum(p.cost_usd for p in posts)
+    print(f"{client.name}: {len(posts)} post(s), ${spend:.4f} generation cost\n")
     for post in posts:
-        state = "published" if post.published else ("error" if post.error else "queued")
-        print(f"  [{state:9}] {post.created_at[:16]}  {post.hook[:60]}")
+        print(f"  {post.id}  [{post.state:9}] {post.created_at[:16]}  {post.hook[:56]}")
     return 0
+
+
+def _set_approval(args, approved: bool) -> int:
+    client = Client.load(args.client)
+    store = Store(client)
+
+    if args.id:
+        post = store.get(args.id)
+        if not post:
+            print(f"error: no post matching id {args.id!r} for {client.slug}")
+            return 1
+        targets = [post]
+    else:
+        targets = [p for p in store.load_all() if not p.published and not p.error]
+        if not targets:
+            print("Nothing to act on.")
+            return 1
+
+    for post in targets:
+        post.approved = approved
+        store.save(post)
+
+    verb = "Approved" if approved else "Unapproved"
+    print(f"{verb} {len(targets)} post(s) for {client.name}")
+    return 0
+
+
+def cmd_approve(args, settings: Settings) -> int:
+    return _set_approval(args, True)
+
+
+def cmd_reject(args, settings: Settings) -> int:
+    return _set_approval(args, False)
 
 
 def cmd_clients(args, settings: Settings) -> int:
@@ -137,12 +178,21 @@ def cmd_clients(args, settings: Settings) -> int:
         return 0
     for client in clients:
         posts = Store(client).load_all()
-        published = sum(1 for p in posts if p.published)
-        print(f"  {client.slug:20} {client.name:28} {published} published / {len(posts)} total")
+        counts = {k: 0 for k in ("queued", "approved", "published", "error")}
+        for post in posts:
+            counts[post.state] += 1
+        spend = sum(p.cost_usd for p in posts)
+        print(
+            f"  {client.slug:18} {client.name:24} "
+            f"{counts['published']:3} pub  {counts['approved']:3} appr  "
+            f"{counts['queued']:3} queued  ${spend:.4f}"
+        )
     return 0
 
 
 COMMANDS = {
+    "approve": cmd_approve,
+    "reject": cmd_reject,
     "whoami": cmd_whoami,
     "generate": cmd_generate,
     "publish": cmd_publish,
@@ -157,6 +207,7 @@ def main() -> int:
     parser.add_argument("command", choices=sorted(COMMANDS))
     parser.add_argument("--client", "-c", default="default", help="client slug (clients/<slug>.yaml)")
     parser.add_argument("--count", "-n", type=int, default=1, help="how many posts to generate")
+    parser.add_argument("--id", help="post id for approve/reject; omit to act on all queued")
     args = parser.parse_args()
 
     settings = Settings()

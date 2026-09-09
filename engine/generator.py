@@ -8,6 +8,25 @@ from typing import Any
 from .config import Client, Settings
 from .store import Post
 
+# USD per million tokens (input, output). Used only to record what a batch cost;
+# update when prices change.
+MODEL_PRICING = {
+    "claude-opus-5": (15.0, 75.0),
+    "claude-sonnet-5": (3.0, 15.0),
+    "claude-haiku-4-5-20251001": (1.0, 5.0),
+}
+
+
+def estimate_cost(model: str, usage) -> float:
+    """Cost of one API call in USD, or 0.0 for a model we have no price for."""
+    rate_in, rate_out = MODEL_PRICING.get(model, (0.0, 0.0))
+    return round(
+        (getattr(usage, "input_tokens", 0) / 1_000_000) * rate_in
+        + (getattr(usage, "output_tokens", 0) / 1_000_000) * rate_out,
+        6,
+    )
+
+
 POST_SCHEMA = {
     "name": "emit_posts",
     "description": "Return the finished LinkedIn posts.",
@@ -155,13 +174,20 @@ class Generator:
         if payload is None:
             raise RuntimeError("Claude did not return posts. Try again or check the model name.")
 
+        items = payload.get("posts", [])
+        # Split the call's cost across the posts it produced.
+        per_post = (
+            estimate_cost(self.settings.model, message.usage) / len(items) if items else 0.0
+        )
+
         return [
             Post(
+                cost_usd=round(per_post, 6),
                 hook=item["hook"].strip(),
                 body=item["body"].strip(),
                 hashtags=[h.lstrip("#") for h in item.get("hashtags", [])],
                 topic=item.get("topic", ""),
                 image_prompt=item.get("image_prompt", ""),
             )
-            for item in payload.get("posts", [])
+            for item in items
         ]
