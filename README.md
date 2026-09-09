@@ -7,6 +7,10 @@ out of one repo, so it works as a product you sell, not just a script you use.
 Running cost: about **$1.30/month** per account. GitHub Actions does the hosting
 for free.
 
+> **[PRODUCT_PROMPT.md](PRODUCT_PROMPT.md)** is the working agreement for building
+> the next thing — paste it in at the start. It records what went wrong here and
+> what corrected it.
+>
 > **Start with [RESEARCH.md](RESEARCH.md)** — what the evidence says works, and an
 > honest scoring of this repo against it, including what is still missing.
 >
