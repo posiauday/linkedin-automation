@@ -36,6 +36,19 @@ Read them. Adjust `tone`, `topics`, and `banned_phrases` in your YAML until the
 output sounds like you. This is the step that matters — everything else is
 plumbing.
 
+Better than editing by hand: let the profile be derived from writing that already
+exists.
+
+```bash
+python voice.py --posts their-posts.txt --slug me --name "Your Name" --write
+```
+
+Paste in 10-20 posts (theirs or yours), separated by `---` lines. It reports the
+habits it observed with a quote for each, lists the words this person never uses,
+and writes `clients/<slug>.yaml`. A derived profile beats a guessed one, and the
+banned-phrases list it produces is what keeps generated posts out of LinkedIn
+voice. Re-run it occasionally — voice drifts.
+
 ### Going live on LinkedIn
 
 1. Create an app at <https://www.linkedin.com/developers/apps> and request the
@@ -60,6 +73,7 @@ Tokens expire after 60 days. Refresh them or publishing stops silently.
 | `run.py clients` | List configured clients and their post counts |
 | `run.py generate -c SLUG -n 5` | Write 5 posts to `linkedin_posts/SLUG/`, publish nothing |
 | `run.py carousel -c SLUG` | Generate a document carousel and render it to PDF |
+| `voice.py --posts f.txt --slug S --name N` | Derive a voice profile from someone's real posts |
 | `run.py metrics -c SLUG` | Pull reactions and comments for published posts |
 | `run.py list -c SLUG` | Show queued, published and failed posts |
 | `run.py approve -c SLUG --id ID` | Approve a post (omit `--id` to approve all queued) |
@@ -239,6 +253,7 @@ own account. Never ask for anyone's password.
 ```
 run.py                  CLI
 sample.py               prospect sample generator (outreach)
+voice.py                derive a client's voice profile from their real posts
 teardown.py             rewrite someone's post + explain the changes
 batch.py                whole prospect list -> samples + send worksheet
 dashboard.py            agency ops view across all clients

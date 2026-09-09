@@ -20,12 +20,26 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from engine.config import Client, Settings  # noqa: E402
+from engine.config import REPO_ROOT, Client, Settings  # noqa: E402
 from engine import carousel as carousel_mod  # noqa: E402
 from engine.generator import Generator  # noqa: E402
 from engine.images import ImageGenerator  # noqa: E402
 from engine.linkedin import LinkedInError, Publisher  # noqa: E402
 from engine.store import Post, Store  # noqa: E402
+
+
+def relative_to_repo(path: Path) -> str:
+    """Store paths relative to the repo when possible, so a post record stays
+    valid on another machine (CI publishes from a fresh checkout)."""
+    try:
+        return str(path.resolve().relative_to(REPO_ROOT))
+    except ValueError:
+        return str(path)
+
+
+def resolve_repo_path(value: str) -> Path:
+    path = Path(value)
+    return path if path.is_absolute() else REPO_ROOT / path
 
 
 def _preview(post: Post) -> None:
@@ -105,11 +119,24 @@ def cmd_publish(args, settings: Settings) -> int:
         print("Set ENABLE_LINKEDIN_POSTING=true when you are ready to go live.")
         return 0
 
+    if post.kind == "carousel" and not post.pdf_path:
+        print("error: this carousel has no rendered PDF, so there is nothing to "
+              "publish. Regenerate it with 'run.py carousel'.")
+        post.error = "carousel missing pdf_path"
+        store.save(post)
+        return 1
+
     publisher = Publisher(settings, client)
     try:
-        if post.kind == "carousel" and post.pdf_path:
+        if post.kind == "carousel":
+            pdf = resolve_repo_path(post.pdf_path)
+            if not pdf.exists():
+                raise LinkedInError(
+                    f"Carousel PDF is missing at {pdf}. Regenerate it with "
+                    f"'run.py carousel --client {client.slug}'."
+                )
             urn = publisher.publish_document(
-                post.full_text, Path(post.pdf_path), post.doc_title or post.topic
+                post.full_text, pdf, post.doc_title or post.topic
             )
         else:
             urn = publisher.publish(
@@ -170,14 +197,17 @@ def cmd_carousel(args, settings: Settings) -> int:
         return 1
     print(f"PDF: {destination}")
 
+    lines = deck.caption.split("\n")
     post = Post(
-        hook=deck.caption.split("\n")[0][:200],
-        body="\n".join(deck.caption.split("\n")[1:]).strip(),
+        hook=lines[0].strip(),
+        body="\n".join(lines[1:]).strip(),
         hashtags=deck.hashtags,
         topic=args.topic or deck.title,
         kind="carousel",
-        pdf_path=str(destination),
+        # Relative so a post record committed by CI still resolves there.
+        pdf_path=relative_to_repo(destination),
         doc_title=deck.title,
+        cost_usd=deck.cost_usd,
     )
     path = store.save(post)
     print(f"Queued: {path}")
@@ -198,13 +228,16 @@ def cmd_metrics(args, settings: Settings) -> int:
         return 0
 
     publisher = Publisher(settings, client)
-    updated = 0
+    updated, failed = 0, 0
     for post in posts:
         try:
             stats = publisher.engagement(post.linkedin_urn)
         except LinkedInError as exc:
             print(f"error: {exc}")
             return 1
+        if stats is None:
+            failed += 1
+            continue
         if not stats:
             continue
         post.reactions = stats.get("reactions", 0)
@@ -218,6 +251,12 @@ def cmd_metrics(args, settings: Settings) -> int:
     carousels = [p for p in fresh if p.kind == "carousel"]
     texts = [p for p in fresh if p.kind != "carousel"]
 
+    if failed and not updated:
+        print(f"error: every one of the {failed} lookups failed. The access token is "
+              "probably expired, or the app lacks the scope to read post analytics.")
+        return 1
+    if failed:
+        print(f"note: {failed} post(s) could not be read (deleted, or not visible)")
     print(f"{client.name}: measured {updated} of {len(posts)} published post(s)\n")
     for post in sorted(fresh, key=lambda p: p.engagement, reverse=True)[:10]:
         mark = "carousel" if post.kind == "carousel" else "text"

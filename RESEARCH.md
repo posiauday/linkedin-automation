@@ -45,7 +45,7 @@ Honest grades. Anything below B is a gap worth fixing.
 | Outreach personalisation | **B** | Five bespoke posts is strong, but not *signal*-triggered — no "why now". |
 | Sequence length | **C** | Two touches. Evidence says three. The follow-up is the highest-yield message and there was only one. |
 | Proof of results | **F** | Published and forgot. No metrics, no reporting — the exact thing that retains clients and unlocks higher pricing. |
-| Voice fidelity | **B** | Per-client tone and banned phrases, but the profile is guessed by hand rather than learned from their real writing. |
+| Voice fidelity | **B** | Per-client tone and banned phrases, but the profile was guessed by hand rather than learned from their real writing. Now derived by `voice.py`. |
 | Safety / compliance | **A** | Official API only, approval gate, credential isolation, no DM automation. |
 | Engagement beyond posting | **D** | Comments are left entirely manual with no support. |
 
@@ -68,13 +68,14 @@ Ranked by expected effect on revenue, highest first.
    of the evidence-backed range instead of the bottom.
 5. **Writing rules** (`SKILL.md`, generator prompt) — the link penalty, and
    dwell-oriented structure.
+6. **Voice learned from real writing** (`voice.py`) — derives the client profile
+   from 10-20 of their actual posts, with a quote as evidence for each habit,
+   instead of guessing their tone by hand. Closes the B-grade voice gap above.
 
 ## What is still open
 
 Listed honestly rather than quietly dropped.
 
-- **Voice learning from real writing.** The client profile is still hand-written.
-  Reading 20 of their actual posts and deriving the profile would beat it.
 - **Comment drafting.** Evidence says commenting materially affects results.
   Deliberately not automated — auto-commenting is the fastest way to sound like
   a bot — but drafting support would help.

@@ -3,7 +3,7 @@ requests>=2.31.0
 python-dotenv>=1.0.0
 PyYAML>=6.0
 
-# Carousels only. Rendering slides to PDF drives headless Chromium:
+# Carousels are the one optional part. Rendering slides to PDF drives headless
+# Chromium, so install it only if you want them:
 #   pip install playwright && playwright install chromium
 # Everything else works without it.
-playwright>=1.40.0

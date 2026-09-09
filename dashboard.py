@@ -36,7 +36,8 @@ def collect(rate: float) -> dict:
         cost = sum(p.cost_usd for p in posts)
         published = [p for p in posts if p.published]
         last = max((p.created_at for p in published), default="")
-        engagement = sum(p.engagement for p in published)
+        measured = [p for p in published if p.measured_at]
+        engagement = sum(p.engagement for p in measured)
         carousels = [p for p in published if p.kind == "carousel"]
 
         rows.append({
@@ -48,7 +49,10 @@ def collect(rate: float) -> dict:
             "total": len(posts),
             "last": last[:10] if last else "never",
             "engagement": engagement,
-            "per_post": engagement / len(published) if published else 0.0,
+            # Averaged over measured posts only; dividing by all published ones
+            # understates the client-facing number until every post is measured.
+            "per_post": engagement / len(measured) if measured else 0.0,
+            "measured": len(measured),
             "carousels": len(carousels),
         })
         awaiting += [(client, p) for p in posts if p.state == "queued"]
@@ -67,8 +71,10 @@ def collect(rate: float) -> dict:
     if car and txt:
         ca = sum(p.engagement for p in car) / len(car)
         ta = sum(p.engagement for p in txt) / len(txt)
+        # With a zero text average the ratio is undefined, not zero. Rendering
+        # "0.0x" would read as carousels losing, which is the opposite claim.
         compare = {"carousel": ca, "text": ta,
-                   "ratio": (ca / ta) if ta else 0.0,
+                   "ratio": (ca / ta) if ta else None,
                    "n_car": len(car), "n_txt": len(txt)}
 
     return {
@@ -115,7 +121,7 @@ def client_row(row: dict) -> str:
   <td class="num{' bad' if c['error'] else ''}">{c['error']}</td>
   <td class="num">{row['last']}</td>
   <td class="num">{row['engagement']}</td>
-  <td class="num">{row['per_post']:.1f}</td>
+  <td class="num">{row['per_post']:.1f}<br><span class="m">{row['measured']} measured</span></td>
   <td class="num">${row['cost']:.4f}</td>
 </tr>"""
 
@@ -227,8 +233,10 @@ def main() -> int:
     if data["compare"]:
         c = data["compare"]
         tiles.append(tile(
-            "Carousel lift", f"{c['ratio']:.1f}x",
-            f"{c['carousel']:.0f} vs {c['text']:.0f} per post",
+            "Carousel lift",
+            f"{c['ratio']:.1f}x" if c["ratio"] else "—",
+            f"{c['carousel']:.0f} vs {c['text']:.0f} per post"
+            if c["ratio"] else "no text engagement to compare",
         ))
     if args.rate:
         tiles.append(tile("Monthly margin", f"${data['margin']:,.2f}",

@@ -26,6 +26,7 @@ node_modules/
 # Generated posts are committed by the workflow so history is visible,
 # but images are large and regenerable.
 linkedin_posts/**/*.png
+linkedin_posts/**/*.pdf
 !linkedin_posts/.gitkeep
 
 # Prospect samples are per-outreach, not project state.

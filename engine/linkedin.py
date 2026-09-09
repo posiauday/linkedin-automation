@@ -11,6 +11,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from urllib.parse import quote
+
 import requests
 
 from .config import Client, Settings
@@ -145,20 +147,28 @@ class Publisher:
             )
         return response.headers.get("x-restli-id") or response.json().get("id", "unknown")
 
-    def engagement(self, post_urn: str) -> dict:
+    def engagement(self, post_urn: str) -> dict | None:
         """Reactions and comments for one published post.
 
-        This is what turns 'we posted 12 times' into something a client can see.
-        Returns {} rather than raising when a single post cannot be read, so one
-        deleted post never breaks a whole report.
+        This is what turns 'we posted 12 times' into something a client can show.
+
+        Returns None when the lookup failed (bad token, wrong scope, deleted post)
+        and {} only when the response carried no counts, so the caller can tell
+        "nothing to report" apart from "nothing worked".
         """
+        # The URN contains colons, which must not be read as path syntax.
         response = requests.get(
-            f"{API_ROOT}/rest/socialActions/{post_urn}",
+            f"{API_ROOT}/rest/socialActions/{quote(post_urn, safe='')}",
             headers=self._headers(),
             timeout=30,
         )
+        if response.status_code in (401, 403):
+            raise LinkedInError(
+                "Cannot read post analytics: the token is expired or lacks the "
+                "scope. Reading engagement needs the member analytics permission."
+            )
         if not response.ok:
-            return {}
+            return None
         data = response.json()
         return {
             "reactions": (data.get("likesSummary") or {}).get("totalLikes", 0),

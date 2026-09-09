@@ -111,6 +111,7 @@ class Carousel:
     hashtags: list[str] = field(default_factory=list)
     slides: list[dict] = field(default_factory=list)
     pdf_path: str | None = None
+    cost_usd: float = 0.0
 
     @property
     def full_caption(self) -> str:
@@ -147,6 +148,8 @@ def generate(settings: Settings, client: Client, topic: str | None = None) -> Ca
         tool_choice={"type": "tool", "name": "emit_carousel"},
         messages=[{"role": "user", "content": "\n".join(lines)}],
     )
+    from .generator import estimate_cost
+
     for block in message.content:
         if block.type == "tool_use":
             data = block.input
@@ -155,6 +158,7 @@ def generate(settings: Settings, client: Client, topic: str | None = None) -> Ca
                 caption=data["caption"].strip(),
                 hashtags=[h.lstrip("#") for h in data.get("hashtags", [])],
                 slides=data.get("slides", []),
+                cost_usd=estimate_cost(settings.model, message.usage),
             )
     raise RuntimeError("Claude returned no carousel. Try again.")
 
@@ -224,10 +228,12 @@ def render_pdf(carousel: Carousel, client: Client, destination: Path) -> Path:
     destination.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
         source = Path(tmp) / "slides.html"
-        source.write_text(_slide_html(carousel, client))
+        # The document declares UTF-8 and the slides contain an arrow glyph, so
+        # the encoding cannot be left to the platform default.
+        source.write_text(_slide_html(carousel, client), encoding="utf-8")
         launch: dict = {}
         for candidate in ("/opt/pw-browsers/chromium", shutil.which("chromium")):
-            if candidate and Path(candidate).exists():
+            if candidate and Path(candidate).is_file():
                 launch["executable_path"] = candidate
                 break
         with sync_playwright() as pw:
