@@ -1,0 +1,607 @@
+<title>Outreach Desk</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#EAEDE6; --surface:#FFFFFF; --raise:#F4F6F1; --sink:#E1E5DA;
+    --ink:#161A16; --body:#2C332C; --muted:#5C665C; --faint:#8A938A;
+    --line:#D2D8CB; --line-soft:#E0E5DA;
+    --signal:#C0402A; --signal-ink:#FFFFFF;
+    --ok:#2F6B4F; --wait:#9A6B12; --cool:#3D5A80;
+    --display:"Newsreader",Georgia,serif;
+    --sans:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --r:5px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#11140F; --surface:#181C16; --raise:#1F241D; --sink:#0C0F0A;
+      --ink:#E8EDE3; --body:#C6CDC0; --muted:#8B9488; --faint:#666E63;
+      --line:#2E352B; --line-soft:#242A21;
+      --signal:#E4785F; --signal-ink:#14170F;
+      --ok:#7FBF9B; --wait:#D9A94E; --cool:#8FAECE;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#11140F; --surface:#181C16; --raise:#1F241D; --sink:#0C0F0A;
+    --ink:#E8EDE3; --body:#C6CDC0; --muted:#8B9488; --faint:#666E63;
+    --line:#2E352B; --line-soft:#242A21;
+    --signal:#E4785F; --signal-ink:#14170F;
+    --ok:#7FBF9B; --wait:#D9A94E; --cool:#8FAECE;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--body);
+    font:400 15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:36px 22px 90px}
+  button,input,select,textarea{font:inherit;color:inherit}
+
+  header.top{display:flex;justify-content:space-between;align-items:flex-end;
+    gap:18px;flex-wrap:wrap;margin-bottom:8px}
+  h1{font:400 32px/1.05 var(--display);color:var(--ink);letter-spacing:-.022em;margin:0}
+  .sub{color:var(--muted);font-size:14px;margin:6px 0 0}
+  .conn{font:500 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);display:flex;align-items:center;gap:7px;white-space:nowrap}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none}
+  .dot.live{background:var(--ok)} .dot.off{background:var(--signal)}
+
+  .banner{background:var(--raise);border:1px solid var(--line);border-left:3px solid var(--wait);
+    border-radius:var(--r);padding:13px 16px;margin:22px 0 0;color:var(--muted);font-size:13.5px}
+  .banner strong{color:var(--ink)}
+
+  .counts{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));
+    gap:10px;margin:24px 0 0}
+  .ct{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:13px 15px}
+  .ct .k{font:500 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 8px}
+  .ct .v{font:400 25px/1 var(--display);color:var(--ink);margin:0;
+    font-variant-numeric:tabular-nums}
+  .ct.hot .v{color:var(--signal)}
+
+  h2{font:400 21px/1.2 var(--display);color:var(--ink);margin:44px 0 4px;
+    display:flex;align-items:baseline;gap:10px}
+  h2 .n{font:500 11px/1 var(--mono);color:var(--muted);letter-spacing:.1em}
+  .note{color:var(--muted);font-size:13.5px;margin:0 0 16px;max-width:64ch}
+
+  .today{display:flex;flex-direction:column;gap:10px}
+  .task{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:16px 18px;display:flex;justify-content:space-between;align-items:center;
+    gap:16px;flex-wrap:wrap}
+  .task{cursor:pointer}
+  .task:hover{background:var(--raise)}
+  .task:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+  .task .btn{pointer-events:none}
+  .task.due{border-left:3px solid var(--wait)}
+  .task.fresh{border-left:3px solid var(--cool)}
+  .task .who{font-weight:600;color:var(--ink)}
+  .task .why{font-size:13px;color:var(--muted);margin-top:2px}
+
+  .pill{display:inline-block;font:500 10px/1 var(--mono);letter-spacing:.09em;
+    text-transform:uppercase;padding:5px 8px;border-radius:3px;
+    background:var(--sink);color:var(--muted);white-space:nowrap}
+  .pill.new{background:color-mix(in srgb,var(--cool) 16%,transparent);color:var(--cool)}
+  .pill.drafted{background:color-mix(in srgb,var(--wait) 18%,transparent);color:var(--wait)}
+  .pill.sent{background:color-mix(in srgb,var(--cool) 16%,transparent);color:var(--cool)}
+  .pill.replied{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+  .pill.won{background:var(--ok);color:var(--surface)}
+  .pill.lost,.pill.dead{background:var(--sink);color:var(--faint)}
+
+  .btn{background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+    border-radius:4px;padding:9px 15px;font-weight:600;font-size:13.5px;cursor:pointer;
+    white-space:nowrap}
+  .btn:hover{opacity:.88}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn.ghost:hover{background:var(--raise);opacity:1}
+  .btn.go{background:var(--signal);border-color:var(--signal);color:var(--signal-ink)}
+  .btn.sm{padding:6px 11px;font-size:12.5px}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+    outline:2px solid var(--signal);outline-offset:2px}
+
+  form.add{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));
+    gap:11px;align-items:end}
+  label{display:block;font:500 10px/1 var(--mono);letter-spacing:.11em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  input,select,textarea{width:100%;background:var(--paper);border:1px solid var(--line);
+    border-radius:4px;padding:9px 11px;font-size:14px}
+  textarea{resize:vertical;min-height:82px;line-height:1.5}
+
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);
+    background:var(--surface)}
+  table{width:100%;border-collapse:collapse;min-width:640px}
+  th,td{padding:12px 14px;border-bottom:1px solid var(--line-soft);text-align:left}
+  th{font:500 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  tbody tr{cursor:pointer}
+  tbody tr:hover{background:var(--raise)}
+  td .nm{font-weight:600;color:var(--ink)}
+  td .mt{font-size:12.5px;color:var(--muted)}
+  .right{text-align:right}
+
+  .empty{background:var(--surface);border:1px dashed var(--line);border-radius:var(--r);
+    padding:28px;color:var(--muted);text-align:center}
+
+  /* drawer */
+  .scrim{position:fixed;inset:0;background:rgba(10,14,9,.42);z-index:40}
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:min(620px,100%);z-index:41;
+    background:var(--paper);border-left:1px solid var(--line);overflow-y:auto;
+    padding:26px 24px 60px}
+  .drawer h3{font:400 25px/1.15 var(--display);color:var(--ink);margin:0 0 3px;
+    letter-spacing:-.015em}
+  .dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;
+    margin-bottom:18px}
+  .x{background:none;border:0;color:var(--muted);font-size:24px;cursor:pointer;
+    line-height:1;padding:2px 6px}
+  .x:hover{color:var(--ink)}
+  .stages{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0 22px}
+  .stage{border:1px solid var(--line);background:var(--surface);border-radius:3px;
+    padding:6px 10px;font:500 10px/1 var(--mono);letter-spacing:.09em;
+    text-transform:uppercase;color:var(--muted);cursor:pointer}
+  .stage[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .block{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:17px;margin-bottom:14px}
+  .block h4{font:600 13px/1.3 var(--sans);color:var(--ink);margin:0 0 4px;
+    display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .block p.h{font-size:12.5px;color:var(--muted);margin:0 0 12px}
+  .out{background:var(--paper);border:1px solid var(--line);border-radius:4px;
+    padding:13px;white-space:pre-wrap;font-size:14px;line-height:1.6;color:var(--ink);
+    max-height:340px;overflow-y:auto}
+  .post{border-top:1px solid var(--line-soft);padding-top:13px;margin-top:13px}
+  .post:first-child{border-top:0;padding-top:0;margin-top:0}
+  .post .ph{font-weight:600;color:var(--ink);margin:0 0 7px}
+  .post .pb{white-space:pre-wrap;color:var(--body);font-size:14px}
+  .post .pt{color:var(--signal);font-size:13px;margin-top:8px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .thinking{color:var(--muted);font-size:13.5px;font-style:italic}
+  .err{color:var(--signal);font-size:13.5px;margin-top:9px}
+  .cap{font:400 13px/1.6 var(--sans);color:var(--faint);margin-top:30px;max-width:66ch}
+  @media (max-width:560px){ .wrap{padding:26px 16px 70px} .drawer{padding:20px 16px 50px} }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Outreach desk</h1>
+      <p class="sub">Everything up to the send. You paste and hit send yourself.</p>
+    </div>
+    <div class="conn"><span class="dot" id="dot"></span><span id="connLabel">connecting</span></div>
+  </header>
+
+  <div id="banner"></div>
+
+  <div class="counts" id="counts"></div>
+
+  <h2>Today <span class="n" id="todayCount"></span></h2>
+  <p class="note">New prospects to draft, and follow-ups that came due. Stop at 25 sends
+     a day — LinkedIn restricts accounts that message in bulk.</p>
+  <div class="today" id="today"></div>
+
+  <h2>Add a prospect</h2>
+  <p class="note">Name and what they do is enough. The rest sharpens the writing.</p>
+  <form class="add" id="addForm">
+    <div><label for="f-name">Name</label><input id="f-name" required placeholder="Sarah Chen"></div>
+    <div><label for="f-niche">What they do</label><input id="f-niche" required placeholder="demand gen for B2B SaaS"></div>
+    <div><label for="f-role">Role</label><input id="f-role" placeholder="Fractional CMO"></div>
+    <div><label for="f-aud">Who they sell to</label><input id="f-aud" placeholder="Series A founders"></div>
+    <div><label for="f-warm">Relationship</label>
+      <select id="f-warm"><option value="cold">Cold</option><option value="warm">Warm — they know me</option></select></div>
+    <div><button class="btn" type="submit">Add</button></div>
+  </form>
+
+  <h2>Pipeline <span class="n" id="pipeCount"></span></h2>
+  <div id="pipe"></div>
+
+  <p class="cap">Drafting runs on your Claude account. Nothing is sent automatically —
+     LinkedIn has no API for messages, and automating them gets accounts restricted.</p>
+</div>
+
+<div id="drawerHost"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STAGES = ["new", "drafted", "sent", "replied", "won", "lost"];
+  var FOLLOW_UP_DAYS = 2;
+  var DAILY_CAP = 25;
+
+  var db = null, sample = null, unsub = null;
+  var state = { prospects: [], open: null, busy: {} };
+
+  function uid() { return Math.random().toString(36).slice(2, 10); }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function daysSince(iso) {
+    if (!iso) return null;
+    return Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+  }
+  function byId(id) { 
+    for (var i = 0; i < state.prospects.length; i++) {
+      if (state.prospects[i].id === id) return state.prospects[i];
+    }
+    return null;
+  }
+
+  // ---------- persistence ----------
+  function save(p) {
+    p.updatedAt = new Date().toISOString();
+    var i = state.prospects.findIndex(function (x) { return x.id === p.id; });
+    if (i >= 0) state.prospects[i] = p; else state.prospects.push(p);
+    render();
+    if (db) {
+      db.doc("prospects/" + p.id).set(p).catch(function (e) {
+        showBanner("Could not save: " + (e && e.message ? e.message : "unknown error"));
+      });
+    }
+  }
+  function remove(p) {
+    state.prospects = state.prospects.filter(function (x) { return x.id !== p.id; });
+    state.open = null; render();
+    if (db) db.doc("prospects/" + p.id).delete().catch(function () {});
+  }
+
+  function showBanner(html) {
+    document.getElementById("banner").innerHTML =
+      '<div class="banner">' + html + "</div>";
+  }
+
+  // ---------- drafting ----------
+  var RULES = [
+    "Rules, no exceptions:",
+    "- Never open with 'In today's fast-paced world', 'Let's be honest', 'Here's the thing',",
+    "  'I've been thinking a lot about', or any variant of 'Unpopular opinion'.",
+    "- No emoji bullet lists. At most one emoji in a whole post, usually zero.",
+    "- Every claim gets a number, a named example, or a specific scenario. If you cannot be",
+    "  specific, cut the claim. Never invent statistics or results about this person.",
+    "- Never use: leverage, unlock, game-changer, dive deep, synergy, robust, seamless,",
+    "  \"it's not X, it's Y\".",
+    "- Short sentences, 8th grade reading level, blank line between paragraphs.",
+    "- The first line must work alone: LinkedIn hides everything after ~120 characters."
+  ].join("\n");
+
+  function who(p) {
+    return [
+      "Name: " + p.name,
+      p.role ? "Role: " + p.role : "",
+      "Field: " + p.niche,
+      p.audience ? "They sell to: " + p.audience : ""
+    ].filter(Boolean).join("\n");
+  }
+
+  async function draftPosts(p) {
+    var out = await sample.json(
+      "Write 5 LinkedIn posts as if you were this person, from their experience.\n\n" +
+      who(p) + "\n\n" + RULES + "\n\n" +
+      'Reply with ONLY a JSON array, no prose, no code fence: ' +
+      '[{"hook":"first line under 120 chars","body":"90-180 words, blank lines between ' +
+      'paragraphs, ends with one genuine question","tags":["Tag1","Tag2","Tag3"]}]',
+      { modelTier: "complex" }
+    );
+    if (!Array.isArray(out)) throw new Error("Unexpected response shape");
+    return out;
+  }
+
+  async function draftDM(p) {
+    var warm = p.warmth === "warm";
+    var r = await sample(
+      "Write a short LinkedIn direct message.\n\n" + who(p) + "\n\n" +
+      "Context: I wrote 5 posts for them using an AI content engine I built, and I'm " +
+      "giving those posts away free. This message contains NO pitch — the posts are the " +
+      "whole message.\n" +
+      (warm ? "I already know this person, so it can be familiar.\n"
+            : "I do not know this person, so it must earn attention in the first line.\n") +
+      "\nRules:\n- Under 90 words.\n- No pitch, no ask for a call.\n" +
+      "- Name what they specifically work on, so it cannot read as a mass message.\n" +
+      "- Give them an easy out, e.g. 'use them or don't'.\n" +
+      "- Include the literal placeholder [LINK] where the sample page link goes.\n" +
+      "- No emoji. No 'I hope this finds you well'. Plain, direct, human.\n\n" +
+      "Reply with only the message text.",
+      { modelTier: "default" }
+    );
+    return r.text.trim();
+  }
+
+  async function draftReply(p) {
+    var r = await sample(
+      "They replied to my outreach. Draft my response.\n\n" + who(p) +
+      "\n\nTheir reply:\n\"\"\"\n" + p.reply + "\n\"\"\"\n\n" +
+      "My offer: I run their LinkedIn posting — 12 posts a month, published to their " +
+      "account, in their voice. $400/month as a founding client because I'm building my " +
+      "first case studies, in exchange for a testimonial and permission to reference the " +
+      "work. Month to month, they can leave anytime.\n\n" +
+      "Rules:\n- Match their energy and length. Do not write a wall of text.\n" +
+      "- If they asked a question, answer it plainly first.\n" +
+      "- Be honest that I'm new. It is the reason for the price, not something to hide.\n" +
+      "- Never invent results, clients, or statistics.\n" +
+      "- One clear next step at the end, no pressure language.\n" +
+      "- No emoji, no corporate filler.\n\nReply with only the message text.",
+      { modelTier: "complex" }
+    );
+    return r.text.trim();
+  }
+
+  async function run(p, key, fn, field) {
+    if (!sample) return;
+    state.busy[p.id + key] = true; render();
+    try {
+      var value = await fn(p);
+      var fresh = byId(p.id) || p;
+      fresh[field] = value;
+      if (field === "posts" && fresh.stage === "new") fresh.stage = "drafted";
+      delete state.busy[p.id + key];
+      save(fresh);
+    } catch (e) {
+      delete state.busy[p.id + key];
+      var msg = e && e.code === "not_granted"
+        ? "Drafting is not available on this view."
+        : (e && e.message) || "Drafting failed. Try again.";
+      state.errors = state.errors || {};
+      state.errors[p.id + key] = msg;
+      render();
+    }
+  }
+
+  // ---------- derived ----------
+  function todayList() {
+    var out = [];
+    state.prospects.forEach(function (p) {
+      if (p.stage === "new") out.push({ p: p, kind: "fresh", why: "Needs posts drafted" });
+      else if (p.stage === "drafted") out.push({ p: p, kind: "fresh", why: "Drafted and ready to send" });
+      else if (p.stage === "sent" && !p.followedUp) {
+        var d = daysSince(p.sentAt);
+        if (d !== null && d >= FOLLOW_UP_DAYS) {
+          out.push({ p: p, kind: "due", why: "Sent " + d + " days ago — one follow-up, then stop" });
+        }
+      } else if (p.stage === "replied" && !p.replyDraft) {
+        out.push({ p: p, kind: "due", why: "They replied — draft your response" });
+      }
+    });
+    return out;
+  }
+
+  function sentToday() {
+    var t = new Date().toDateString();
+    return state.prospects.filter(function (p) {
+      return p.sentAt && new Date(p.sentAt).toDateString() === t;
+    }).length;
+  }
+
+  // ---------- render ----------
+  function render() {
+    var ps = state.prospects;
+    var count = function (s) { return ps.filter(function (p) { return p.stage === s; }).length; };
+    var today = todayList();
+    var st = sentToday();
+
+    document.getElementById("counts").innerHTML = [
+      ["Prospects", ps.length, ""],
+      ["Sent today", st + " / " + DAILY_CAP, st >= DAILY_CAP ? "hot" : ""],
+      ["Awaiting reply", count("sent"), ""],
+      ["Replied", count("replied"), count("replied") ? "hot" : ""],
+      ["Won", count("won"), ""]
+    ].map(function (c) {
+      return '<div class="ct ' + c[2] + '"><p class="k">' + esc(c[0]) +
+             '</p><p class="v">' + esc(c[1]) + "</p></div>";
+    }).join("");
+
+    document.getElementById("todayCount").textContent = today.length ? today.length : "";
+    document.getElementById("pipeCount").textContent = ps.length ? ps.length : "";
+
+    document.getElementById("today").innerHTML = today.length
+      ? today.map(function (t) {
+          return '<div class="task ' + t.kind + '" data-open="' + t.p.id +
+            '" role="button" tabindex="0"><div><div class="who">' +
+            esc(t.p.name) + '</div><div class="why">' + esc(t.why) + '</div></div>' +
+            '<span class="btn sm">Open</span></div>';
+        }).join("")
+      : '<div class="empty">Nothing waiting. Add prospects below, or come back when a ' +
+        'follow-up comes due.</div>';
+
+    document.getElementById("pipe").innerHTML = ps.length
+      ? '<div class="scroll"><table><thead><tr><th>Prospect</th><th>Stage</th>' +
+        '<th>Last touch</th><th class="right">Assets</th></tr></thead><tbody>' +
+        ps.slice().sort(function (a, b) {
+          return STAGES.indexOf(a.stage) - STAGES.indexOf(b.stage);
+        }).map(function (p) {
+          var d = daysSince(p.updatedAt);
+          return '<tr data-open="' + p.id + '"><td><span class="nm">' + esc(p.name) +
+            '</span><br><span class="mt">' + esc(p.niche) + '</span></td>' +
+            '<td><span class="pill ' + p.stage + '">' + p.stage + "</span></td>" +
+            '<td class="mt">' + (d === null ? "—" : d === 0 ? "today" : d + "d ago") + "</td>" +
+            '<td class="right mt">' + (function () {
+              var bits = [];
+              if (p.posts && p.posts.length) bits.push(p.posts.length + " posts");
+              if (p.dm) bits.push("DM");
+              return bits.length ? esc(bits.join(" · ")) : "—";
+            })() + "</td></tr>";
+        }).join("") + "</tbody></table></div>"
+      : '<div class="empty">No prospects yet.</div>';
+
+    renderDrawer();
+  }
+
+  function renderDrawer() {
+    var host = document.getElementById("drawerHost");
+    if (!state.open) { host.innerHTML = ""; return; }
+    var p = byId(state.open);
+    if (!p) { state.open = null; host.innerHTML = ""; return; }
+    var busy = function (k) { return state.busy[p.id + k]; };
+    var err = function (k) { return (state.errors || {})[p.id + k]; };
+
+    var postsHtml = busy("posts")
+      ? '<p class="thinking">Writing five posts…</p>'
+      : p.posts && p.posts.length
+        ? '<div class="out">' + p.posts.map(function (x) {
+            return '<div class="post"><p class="ph">' + esc(x.hook) + '</p><div class="pb">' +
+              esc(x.body) + '</div><p class="pt">' +
+              esc((x.tags || []).map(function (t) { return "#" + String(t).replace(/^#/, ""); }).join(" ")) +
+              "</p></div>";
+          }).join("") + "</div>"
+        : '<p class="thinking">Not drafted yet.</p>';
+
+    host.innerHTML =
+      '<div class="scrim" data-close="1"></div><aside class="drawer" role="dialog" aria-label="Prospect">' +
+      '<div class="dhead"><div><h3>' + esc(p.name) + "</h3>" +
+      '<p class="sub">' + esc([p.role, p.niche].filter(Boolean).join(" · ")) + "</p></div>" +
+      '<button class="x" data-close="1" aria-label="Close">&times;</button></div>' +
+
+      '<div class="stages">' + STAGES.map(function (s) {
+        return '<button class="stage" data-stage="' + s + '" aria-pressed="' +
+          (p.stage === s) + '">' + s + "</button>";
+      }).join("") + "</div>" +
+
+      '<div class="block"><h4>Free posts' +
+      (sample ? '<button class="btn sm ghost" data-act="posts">' +
+        (p.posts ? "Rewrite" : "Write 5 posts") + "</button>" : "") + "</h4>" +
+      '<p class="h">This is what you give away. It does the selling, not the message.</p>' +
+      postsHtml + (err("posts") ? '<p class="err">' + esc(err("posts")) + "</p>" : "") +
+      (p.posts ? '<div class="row"><button class="btn sm ghost" data-copy="posts">Copy posts</button></div>' : "") +
+      "</div>" +
+
+      '<div class="block"><h4>Message' +
+      (sample ? '<button class="btn sm ghost" data-act="dm">' +
+        (p.dm ? "Redraft" : "Draft message") + "</button>" : "") + "</h4>" +
+      '<p class="h">No pitch. Replace [LINK] with wherever you host their posts.</p>' +
+      (busy("dm") ? '<p class="thinking">Drafting…</p>'
+        : p.dm ? '<div class="out">' + esc(p.dm) + "</div>"
+        : '<p class="thinking">Not drafted yet.</p>') +
+      (err("dm") ? '<p class="err">' + esc(err("dm")) + "</p>" : "") +
+      '<div class="row">' +
+      (p.dm ? '<button class="btn sm ghost" data-copy="dm">Copy message</button>' : "") +
+      (p.dm && p.stage !== "sent" && p.stage !== "replied" && p.stage !== "won"
+        ? '<button class="btn sm go" data-act="sent">I sent this</button>' : "") +
+      "</div></div>" +
+
+      (p.stage === "sent" || p.stage === "replied" || p.stage === "won"
+        ? '<div class="block"><h4>Their reply</h4>' +
+          '<p class="h">Paste what they said and get a response drafted.</p>' +
+          '<textarea id="replyBox" placeholder="Paste their reply…">' + esc(p.reply || "") + "</textarea>" +
+          '<div class="row"><button class="btn sm ghost" data-act="savereply">Save reply</button>' +
+          (p.reply && sample ? '<button class="btn sm" data-act="replydraft">Draft my response</button>' : "") +
+          "</div>" +
+          (busy("replydraft") ? '<p class="thinking">Drafting…</p>' : "") +
+          (err("replydraft") ? '<p class="err">' + esc(err("replydraft")) + "</p>" : "") +
+          (p.replyDraft ? '<div class="out" style="margin-top:12px">' + esc(p.replyDraft) +
+            '</div><div class="row"><button class="btn sm ghost" data-copy="replyDraft">Copy response</button></div>' : "") +
+          "</div>"
+        : "") +
+
+      '<div class="block"><h4>Notes</h4>' +
+      '<textarea id="noteBox" placeholder="Anything you learned about them…">' + esc(p.notes || "") + "</textarea>" +
+      '<div class="row"><button class="btn sm ghost" data-act="savenote">Save note</button>' +
+      '<button class="btn sm ghost" data-act="delete">Remove prospect</button></div></div>' +
+      "</aside>";
+  }
+
+  // ---------- events ----------
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest("[data-open],[data-close],[data-stage],[data-act],[data-copy]");
+    if (!t) return;
+
+    if (t.dataset.open) { state.open = t.dataset.open; delete state.errors; render(); return; }
+    if (t.dataset.close) { state.open = null; render(); return; }
+
+    var p = byId(state.open);
+    if (!p) return;
+
+    if (t.dataset.stage) {
+      p.stage = t.dataset.stage;
+      if (p.stage === "sent" && !p.sentAt) p.sentAt = new Date().toISOString();
+      save(p); return;
+    }
+    if (t.dataset.copy) {
+      var text = t.dataset.copy === "posts"
+        ? (p.posts || []).map(function (x) {
+            return x.hook + "\n\n" + x.body + "\n\n" +
+              (x.tags || []).map(function (g) { return "#" + String(g).replace(/^#/, ""); }).join(" ");
+          }).join("\n\n———\n\n")
+        : p[t.dataset.copy] || "";
+      navigator.clipboard.writeText(text).then(function () {
+        var old = t.textContent; t.textContent = "Copied";
+        setTimeout(function () { t.textContent = old; }, 1400);
+      }).catch(function () {});
+      return;
+    }
+    var a = t.dataset.act;
+    if (a === "posts") run(p, "posts", draftPosts, "posts");
+    else if (a === "dm") run(p, "dm", draftDM, "dm");
+    else if (a === "replydraft") run(p, "replydraft", draftReply, "replyDraft");
+    else if (a === "sent") { p.stage = "sent"; p.sentAt = new Date().toISOString(); save(p); }
+    else if (a === "savereply") {
+      var box = document.getElementById("replyBox");
+      p.reply = box ? box.value.trim() : "";
+      if (p.reply && p.stage === "sent") p.stage = "replied";
+      save(p);
+    } else if (a === "savenote") {
+      var nb = document.getElementById("noteBox");
+      p.notes = nb ? nb.value : ""; save(p);
+    } else if (a === "delete") {
+      if (window.confirm("Remove " + p.name + " from the pipeline?")) remove(p);
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && state.open) { state.open = null; render(); return; }
+    if ((e.key === "Enter" || e.key === " ") && e.target.classList &&
+        e.target.classList.contains("task")) {
+      e.preventDefault();
+      state.open = e.target.dataset.open; delete state.errors; render();
+    }
+  });
+
+  document.getElementById("addForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var g = function (id) { return document.getElementById(id).value.trim(); };
+    var p = {
+      id: uid(), name: g("f-name"), niche: g("f-niche"), role: g("f-role"),
+      audience: g("f-aud"), warmth: document.getElementById("f-warm").value,
+      stage: "new", createdAt: new Date().toISOString()
+    };
+    if (!p.name || !p.niche) return;
+    save(p);
+    e.target.reset();
+  });
+
+  // ---------- boot ----------
+  render();
+  showBanner("<strong>Connecting…</strong> the desk works offline, but nothing is saved " +
+    "until storage connects.");
+
+  claude.use("db").then(function (d) {
+    db = d;
+    var dot = document.getElementById("dot");
+    var label = document.getElementById("connLabel");
+    if (!db) {
+      dot.className = "dot off"; label.textContent = "not saving";
+      showBanner("<strong>Storage unavailable on this view.</strong> You can still use the " +
+        "desk, but nothing will be kept when you close the page.");
+      return;
+    }
+    dot.className = "dot live"; label.textContent = "saving";
+    document.getElementById("banner").innerHTML = "";
+    unsub = db.collection("prospects").onSnapshot(function (snap) {
+      state.prospects = snap.docs.map(function (doc) {
+        var v = doc.data() || {}; v.id = doc.id; return v;
+      });
+      render();
+    }, function (err) {
+      showBanner("<strong>Storage error.</strong> " + esc(err && err.message || "") +
+        " Recent changes may not be saved.");
+    });
+  });
+
+  claude.use("sample").then(function (s) {
+    sample = s;
+    if (!sample) {
+      showBanner("<strong>Drafting unavailable on this view.</strong> The pipeline still " +
+        "works; posts and messages have to be written elsewhere.");
+    }
+    render();
+  });
+})();
+</script>

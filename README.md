@@ -88,6 +88,20 @@ regenerate it whenever you want a current picture.
 
 ---
 
+## The outreach desk
+
+`console/index.html` is the hosted version of the outreach workflow, published as
+an Artifact. It keeps your pipeline, drafts each prospect's free posts, writes the
+message, times the follow-up, and drafts your reply when they answer. You copy and
+send by hand.
+
+**Nothing is sent automatically, on purpose.** LinkedIn has no API for connection
+requests or direct messages. Every tool that automates them drives a browser
+against LinkedIn's terms, and that is the most common way accounts get permanently
+restricted. Automate the drafting; send it yourself.
+
+`batch.py` is the offline equivalent if you would rather work from files.
+
 ## Selling this as a service
 
 `sample.py` is the outreach tool. It takes a prospect, writes five posts for
@@ -204,6 +218,7 @@ clients/                one YAML per account
 linkedin_posts/<slug>/  generated posts
 samples/                prospect sample pages and teardowns
 sales/index.html        the service sales page
+console/index.html      outreach desk (pipeline + drafting, hosted as an Artifact)
 GTM.md                  market research, pricing, funnel, channels, ads
 SALES_PLAYBOOK.md       targeting, scripts, objections, delivery checklist
 SKILL.md                the writing rules, as a Claude skill
