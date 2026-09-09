@@ -61,6 +61,7 @@ Tokens expire after 60 days. Refresh them or publishing stops silently.
 | `run.py whoami -c SLUG` | Look up the LinkedIn person ID for a token |
 | `sample.py --name ... --niche ...` | Generate a free sample page for a prospect |
 | `teardown.py --file post.txt` | Rewrite an existing post and explain what changed |
+| `batch.py prospects.csv` | Generate samples + DMs for a whole prospect list at once |
 
 Publishing is off unless `ENABLE_LINKEDIN_POSTING=true`. Every command is a dry
 run until you flip that.
@@ -83,6 +84,17 @@ Giving away real work before asking for money is what makes cold outreach work.
 `teardown.py` is the other half: paste in a post someone already published and it
 returns a rewrite plus a breakdown of each change. Use it in a DM as proof, or
 publish the teardown yourself as content.
+
+`batch.py` runs the sample generator over a whole list at once and produces a
+worksheet with every message in send order:
+
+```bash
+cp prospects.example.csv prospects.csv    # then fill it in
+python batch.py prospects.csv
+```
+
+It caps at 25 prospects per run on purpose. LinkedIn restricts accounts that
+message in bulk.
 
 Adding a paying client:
 
@@ -160,6 +172,7 @@ own account. Never ask for anyone's password.
 run.py                  CLI
 sample.py               prospect sample generator (outreach)
 teardown.py             rewrite someone's post + explain the changes
+batch.py                whole prospect list -> samples + send worksheet
 engine/
   config.py             settings + client profile loading
   generator.py          Claude post generation
