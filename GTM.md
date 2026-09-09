@@ -48,17 +48,22 @@ person** can produce $500 tomorrow.
 
 Three tiers. The middle one is what you quote.
 
-| Tier | Price | What it is |
+**Market rate is not your rate.** The $2,000-5,000/mo above is what buyers pay
+providers with portfolios. You have none. Price on the proof you actually have
+and climb as you earn it:
+
+| Stage | You have | Charge |
 |---|---|---|
-| **Test month** | **$500** | 12 posts, published to their account, one month. The thing you actually sell first. |
-| **Retainer** | **$1,500/mo** | 20 posts/mo, voice tuning, monthly strategy call. Where they land after the test. |
-| **Executive** | **$3,000/mo** | Retainer plus comment-reply drafting and a quarterly positioning session. |
+| **Clients 1-2** | Nothing published | **$300-500/mo**, named as a founding rate |
+| **Clients 3-5** | 2 clients, 8 weeks of posts, their numbers | **$750-1,000/mo** |
+| **Clients 6+** | References and before/after data | **$1,500-2,500/mo** |
 
-**Sell the test month, never the retainer.** The research is unambiguous: close a
-paid test at roughly one-third of the package before proposing the retainer. It
-removes the client's risk and gives you a clean exit if the fit is bad.
+**Two founding clients at $400-500 is your $1,000.** Not one client at $1,500 —
+that sale does not exist until you can point at someone.
 
-**Two test months is your $1,000.** That is the whole target. Two people.
+Sell a first month, not a contract. A small, bounded first commitment is what
+closes when you have no reputation: it caps their downside at one month and
+gives you a clean exit if the fit is bad.
 
 Never do free trials. A free trial attracts people who were never going to pay
 and it prices your work at zero in their head. $500 is small enough to say yes to
@@ -66,15 +71,17 @@ without a procurement process and large enough that they show up.
 
 ### Unit economics
 
-| | Test month | Retainer |
+| | Founding client | Client 6+ |
 |---|---|---|
-| Revenue | $500 | $1,500/mo |
+| Revenue | $400/mo | $1,500/mo |
 | API cost | ~$0.50 | ~$1.30/mo |
 | Your time | ~3 hrs setup + 1 hr/wk | ~2 hrs/mo after setup |
-| Effective rate | ~$70/hr | ~$750/hr |
+| Effective rate | ~$55/hr | ~$750/hr |
 
-At 10 retainer clients that is $15,000/mo against roughly $13 of API cost. The
-constraint is not delivery capacity — it is how many conversations you have.
+At 10 clients on the top rung that is $15,000/mo against roughly $13 of API cost.
+That is the destination, not the starting line. The constraint is never delivery
+capacity — it is how many conversations you have and how much proof you carry
+into them.
 
 ---
 
@@ -89,11 +96,13 @@ constraint is not delivery capacity — it is how many conversations you have.
         │
         │  15-min call, or just a DM thread
         ▼
-  Test month $500  ─────────────────────────  this is the sale
+  First month $400  ────────────────────────  this is the sale
         │
         │  they see 12 posts published, engagement moves
         ▼
-  Retainer $1,500/mo  ──────────────────────  ~1/3 convert (my estimate)
+  Continues + testimonial  ─────────────────  ~1/3 continue (my estimate)
+        │                                     the testimonial is the real payout:
+        ▼                                     it is what prices client 3 higher
 ```
 
 Benchmarks for the top of that funnel: a free audit converts **2-5% on cold ICP
@@ -106,7 +115,7 @@ not asking for a call. You are handing over five posts.
 
 ### What the numbers mean for you
 
-To close two test months, working backwards with the cold rate:
+To close two founding clients, working backwards with the cold rate:
 
 - 2 sales needed
 - ~30% of qualified conversations close (estimate) → ~7 real conversations
@@ -182,15 +191,15 @@ presence from a dead profile.
 each. Personal message, no pitch. Expect 4-6 replies.
 
 **Days 6-10 — first teardown + first sales.** Post one public teardown. Convert
-warm replies into test months. **This is where the first $1,000 realistically
-lands.**
+warm replies into founding clients. **This is where the first $1,000
+realistically lands.**
 
 **Days 11-20 — cold at safe volume.** 25/day with samples. Second teardown.
 Comment daily on 10 target prospects' posts.
 
-**Days 21-30 — convert.** Test-month clients are 3 weeks in. Ask for the
-retainer with their actual numbers in front of them. Ask every happy client for
-one referral — referrals are the channel that eventually replaces all of this.
+**Days 21-30 — collect proof.** Founding clients are 3 weeks in. Ask for a
+testimonial and permission to name them — those two assets are what let you
+charge the next client double. Ask every happy client for one referral — referrals are the channel that eventually replaces all of this.
 
 ---
 
@@ -236,17 +245,21 @@ against it. Content volume is a cost centre for them. That is the wedge.
 
 | Tier | Price | For |
 |---|---|---|
-| **Studio** | $297/mo | up to 5 client accounts |
-| **Agency** | $597/mo | up to 20 accounts, white-labelled dashboard |
-| **Install** | $1,500 one-time | set up on their own infrastructure, they own it |
+| **Studio** | $197/mo | up to 5 client accounts |
+| **Agency** | $397/mo | up to 20 accounts, white-labelled dashboard |
+| **Install** | $997 one-time | set up on their own infrastructure, they own it |
 
-One Agency sale at $597 clears more than half the $1,000 target in a single
+These sit under the $497 market tier on purpose — being the cheap credible option
+is the only leverage you have before you have references. Raise to market once
+two agencies are running on it.
+
+One Agency sale at $397 is nearly half the $1,000 target in a single
 conversation, and it recurs. The Install tier exists for agencies that refuse
 per-seat pricing on principle — some do, and $1,500 up front beats losing them.
 
 Price against their saving, not your cost. An agency with 10 clients spending
 4 hours a week on content is spending roughly $2,000/mo of someone's time.
-$597 is obviously worth it. Never mention that your API cost is $13.
+$397 is obviously worth it. Never mention that your API cost is $13.
 
 ### What you demo
 
@@ -294,6 +307,10 @@ person loses interest in posting.
 If you only have energy for one tomorrow: **service track, warm list.** It is the
 shortest path to the first dollar. Start the agency conversations in week two,
 once you have one client's results to point at.
+
+The agency track has one advantage worth knowing: an agency can evaluate the
+dashboard directly, so it depends less on your reputation than the service track
+does. They are judging software they can see, not a writer they have to trust.
 
 ---
 

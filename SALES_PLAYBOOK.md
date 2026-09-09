@@ -12,16 +12,16 @@ to deliver is about $1.30 a month in API fees. [GTM.md](GTM.md) has the research
 behind that number and the full channel plan.
 
 So the target is not 35 strangers buying a template. It is **two people paying
-$500 for a test month.** Two. And they should come from people who already know
+$400-500 as founding clients.** Two. And they should come from people who already know
 you, because that converts roughly ten times better than cold.
 
 | Timeframe | Realistic outcome |
 |---|---|
 | Tonight | Engine running on your own profile, 10-15 warm samples generated |
 | Days 1-2 | Warm messages sent, first replies |
-| Days 3-7 | **First test month sold, $500** |
+| Days 3-7 | **First founding client sold, $400-500** |
 | Days 7-14 | Second sale, $1,000 reached |
-| Day 30 | Test months convert to $1,500/mo retainers |
+| Day 30 | Testimonials collected — the asset that prices client 3 higher |
 
 **You will not have $1,000 in your account when you wake up.** I am not going to
 tell you otherwise so the plan sounds better. Anyone promising guaranteed
@@ -30,39 +30,65 @@ it runs through your warm list, and it depends on you sending messages tomorrow.
 
 ## Pricing
 
-Sell the test month. Never open with the retainer.
+**Your price is set by your proof, not by what the market pays.** Established
+ghostwriters charge $2,000-5,000/mo. You are not them yet. Quoting their number
+with nothing to show gets you ignored, and deservedly.
 
-| Tier | Price | What they get |
-|---|---|---|
-| **Test month** | **$500** | 12 posts, published to their account, one month |
-| **Retainer** | **$1,500/mo** | 20 posts/mo, voice tuning, monthly strategy call |
-| **Executive** | **$3,000/mo** | Retainer plus comment drafting and quarterly positioning |
+Price climbs a ladder. Each rung is unlocked by evidence, not by time passing.
 
-A paid test at roughly one-third of the package is the pattern that closes in
-this market. It removes their risk and gives you a clean exit if the fit is bad.
-Then you convert it to the retainer with three weeks of their own results in
-front of you.
+| Stage | You have | Charge | Why |
+|---|---|---|---|
+| **Clients 1-2** | Nothing. No published client work. | **$300-500/mo** | You are buying case studies. Revenue is secondary. |
+| **Clients 3-5** | 2 clients, 8 weeks of posts, screenshots of their numbers | **$750-1,000/mo** | You can now show what happened to someone else. |
+| **Clients 6+** | Named references, before/after engagement data | **$1,500-2,500/mo** | Now you are priced like the market, because now you are the market. |
 
-**Two test months is the $1,000.**
+**Two founding clients at $400-500 is your $1,000.** That is the target. Not one
+client at $1,500 — that sale does not exist yet.
 
-Never offer a free trial. It attracts people who were never going to pay, and it
-prices your work at zero in their head before you start.
+### Say the discount out loud
 
-Do not discount below $350. A cheap price makes people trust the work less, not
-more, and it attracts the clients who take the most handling.
+Do not quietly charge less and hope they don't notice you're new. Name it:
+
+> I'm building my first case studies, so I'm taking two clients at $400 a month
+> instead of my normal rate. In exchange I want permission to reference the work
+> and a testimonial if it goes well. After those two, the price goes up.
+
+This does three things. It explains the low price so it doesn't read as low
+quality. It creates a real reason to decide now. And it pre-sells the increase,
+so raising it later is not a betrayal.
+
+### Never offer a free trial
+
+It attracts people who were never going to pay, and it prices your work at zero
+in their head before you start. $300 is the floor. Below that you attract the
+clients who take the most handling, and you cannot raise a price from free.
+
+### Raising the price
+
+At the end of every engagement where the work went well, ask for two things: a
+one-line testimonial and permission to name them. Those two assets are literally
+what the next rung costs. Three of them and you can quote $1,000 without
+flinching.
+
+Tell existing clients before you raise it, and let them keep the old rate for
+six months. Founding clients who feel punished for being early do not refer you.
 
 ### What it costs you to deliver
 
-| | Test month | Retainer |
+| | Founding client | Client 6+ |
 |---|---|---|
-| Revenue | $500 | $1,500/mo |
-| API cost | ~$0.50 | ~$1.30/mo |
-| Your time | ~3 hrs setup, then 1 hr/wk | ~2 hrs/mo |
-| Effective rate | ~$70/hr | ~$750/hr |
+| Revenue | $400/mo | $1,500/mo |
+| API cost | ~$1.30/mo | ~$1.30/mo |
+| Your time | ~3 hrs setup, then ~1 hr/wk | ~2 hrs/mo |
+| Effective rate | ~$55/hr | ~$750/hr |
 
-A normal ghostwriter caps out around 8-10 clients because delivery costs them
-hours. Yours costs API fees. Price at market, keep the margin, and do not think
-of yourself as an hourly freelancer.
+Even the founding rate beats the $39/hr Upwork average, and it beats it while
+building the assets that unlock the higher rungs.
+
+A normal ghostwriter caps out at 8-10 clients because delivery costs them hours.
+Yours costs API fees. That is why the top of the ladder is reachable for you and
+is not for them.
+
 
 ## Hour 1: the warm list (do this before any cold outreach)
 
@@ -83,7 +109,7 @@ Who to target, in priority order:
 1. **Fractional executives** (CMO, CFO, COO). Their entire pipeline comes from
    LinkedIn presence. They have budget and they know it.
 2. **Agency owners** (10-50 people). They understand content value, they hate
-   writing it, they can expense $500 without asking anyone.
+   writing it, they can expense $400 without asking anyone.
 3. **Recruiters at boutique firms.** Post constantly, always short on time.
 4. **B2B consultants and coaches.** Presence is the product.
 
@@ -133,9 +159,10 @@ When they reply positively, do not send a proposal document. Send this:
 > your voice, generate the first 30 posts for you to approve, then connect it so
 > it publishes on the schedule you want.
 >
-> Rather than talk you into a retainer, do a paid test month: $500, twelve posts,
-> published to your account. If it's working at the end of it we move to the
-> monthly and if it isn't you walk, no argument.
+> I'm building my first case studies, so I'm taking two clients at $400 a month
+> instead of my normal rate — in exchange I'd want a testimonial and permission
+> to reference the work if it goes well. Twelve posts, published to your account.
+> Month to month, walk whenever.
 >
 > Want me to start?
 
@@ -156,14 +183,14 @@ are good, nobody asks for it, and if they are bad you should refund anyway.
 
 **"Can I just buy the code?"**
 > The system isn't really the product — the voice profile behind it is, and that
-> takes me a few hours with you to build. The test month is $500 and includes it.
-> If you'd genuinely rather run the software yourself I'll set it up on your own
-> accounts for $997 and hand you the keys.
+> takes me a few hours with you to build, and the monthly includes it. If you'd
+> genuinely rather run the software yourself I'll set it up on your own accounts
+> for $997 and hand you the keys.
 
 **"That seems expensive."**
-> Ghostwriters for founders run $2,000-5,000 a month, and most of them are one
-> person who can take eight clients. The test month is $500 and it's twelve posts
-> published, not a proposal. If it doesn't move anything you've lost one month.
+> Ghostwriters for founders run $2,000-5,000 a month. I'm $400 because I'm
+> building my first case studies and you'd be one of them. That's the whole
+> reason for the gap — and it closes once I have two.
 
 **"Let me think about it."**
 > Fair. I'll leave the five posts with you either way. If you publish one and it
@@ -192,10 +219,10 @@ The one-time sales are how you start. The recurring revenue is the business.
 When you deliver a setup, say this at handover:
 
 > I'll check in monthly to tune the voice as your positioning shifts, and swap
-> in new topics as you go. $1,500 a month, cancel whenever.
+> in new topics as you go. Month to month, cancel whenever.
 
-About a third of test-month clients convert. Ten retainer clients is $15,000 a
-month against roughly $13 of API cost, and your delivery time barely moves,
+About a third of founding clients continue. Ten clients on the top rung is
+$15,000 a month against roughly $13 of API cost, and your delivery time barely moves,
 because the engine does not care how many clients it writes for.
 
 The constraint is never delivery. It is how many conversations you have.
