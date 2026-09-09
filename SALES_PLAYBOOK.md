@@ -176,3 +176,18 @@ When you deliver a setup, say this at handover:
 
 About a third of setup clients take it. Ten managed clients is $2,970/month,
 and at that point your subscription fee is not a question you think about.
+
+---
+
+## Assets in this repo
+
+| Asset | Where | What it's for |
+|---|---|---|
+| Sales page | `sales/index.html` | Send to warm leads and anyone who replies. Also published as an Artifact. |
+| Sample generator | `sample.py` | The cold outreach tool. One page + DM per prospect. |
+| DM scripts | generated per prospect | First message and the single follow-up |
+| Delivery checklist | above | What to do the moment someone pays |
+
+Before sending the sales page anywhere, replace `REPLACE-WITH-YOUR-EMAIL@example.com`
+in `sales/index.html` with a real address, and share the Artifact so the link works
+for people other than you.

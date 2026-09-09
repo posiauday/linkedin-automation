@@ -1,0 +1,282 @@
+<title>The First Line</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#EAEDE6; --surface:#FFFFFF; --raise:#F4F6F1;
+    --ink:#161A16; --body:#2C332C; --muted:#5C665C;
+    --line:#D2D8CB; --line-soft:#E0E5DA;
+    --signal:#C0402A; --signal-ink:#FFFFFF;
+    --display:"Newsreader",Georgia,"Times New Roman",serif;
+    --sans:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#11140F; --surface:#181C16; --raise:#1F241D;
+      --ink:#E8EDE3; --body:#C6CDC0; --muted:#8B9488;
+      --line:#2E352B; --line-soft:#242A21;
+      --signal:#E4785F; --signal-ink:#14170F;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#11140F; --surface:#181C16; --raise:#1F241D;
+    --ink:#E8EDE3; --body:#C6CDC0; --muted:#8B9488;
+    --line:#2E352B; --line-soft:#242A21;
+    --signal:#E4785F; --signal-ink:#14170F;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--body);
+    font:400 17px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:64px 24px 96px}
+  section{margin-top:72px}
+
+  .eyebrow{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 20px}
+  h1{font:400 clamp(38px,7vw,62px)/1.04 var(--display);color:var(--ink);
+    letter-spacing:-.022em;margin:0 0 22px;text-wrap:balance}
+  h2{font:400 clamp(25px,4vw,33px)/1.18 var(--display);color:var(--ink);
+    letter-spacing:-.015em;margin:0 0 8px;text-wrap:balance}
+  h3{font:600 16px/1.4 var(--sans);color:var(--ink);margin:0 0 6px}
+  p{margin:0 0 16px;max-width:62ch}
+  .lede{font-size:20px;line-height:1.55;color:var(--body)}
+  .sub{color:var(--muted);margin:0 0 30px;max-width:60ch}
+  em{font-style:italic;color:var(--ink)}
+
+  /* ---- the fold: the thesis of the page ---- */
+  .feed{background:var(--surface);border:1px solid var(--line);border-radius:4px;
+    padding:24px 24px 4px;margin:36px 0 12px}
+  .byline{display:flex;align-items:center;gap:11px;margin-bottom:16px}
+  .av{width:38px;height:38px;border-radius:50%;background:var(--raise);
+    border:1px solid var(--line);flex:none}
+  .who{font:600 14px/1.3 var(--sans);color:var(--ink)}
+  .when{font:400 12px/1.3 var(--mono);color:var(--muted)}
+  .hook{font-size:17px;line-height:1.55;color:var(--ink);margin:0 0 2px;font-weight:500}
+  .fold{display:flex;align-items:center;gap:12px;margin:14px 0}
+  .fold::before,.fold::after{content:"";height:1px;background:var(--signal);flex:1;opacity:.55}
+  .fold span{font:500 10px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
+    color:var(--signal);white-space:nowrap}
+  .rest{color:var(--muted)}
+  .rest p{margin:0 0 13px;max-width:none}
+  .caption{font:400 13px/1.5 var(--mono);color:var(--muted);margin:0 0 40px}
+
+  /* ---- tiers ---- */
+  .tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    gap:1px;background:var(--line);border:1px solid var(--line);border-radius:4px;
+    margin-top:32px;overflow:hidden}
+  .tier{background:var(--surface);padding:26px 22px;display:flex;flex-direction:column;gap:10px}
+  .tier.pick{background:var(--raise)}
+  .tier .tag{font:500 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+    color:var(--signal);min-height:10px}
+  .price{font:400 34px/1 var(--display);color:var(--ink);letter-spacing:-.02em;
+    font-variant-numeric:tabular-nums}
+  .price small{font:400 13px/1 var(--mono);color:var(--muted);letter-spacing:0}
+  .tier ul{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+  .tier li{font-size:14.5px;line-height:1.45;color:var(--body);padding-left:15px;position:relative}
+  .tier li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;
+    border-radius:50%;background:var(--muted)}
+
+  /* ---- steps: real sequence, so numbering is earned ---- */
+  ol.steps{counter-reset:s;list-style:none;margin:28px 0 0;padding:0;
+    display:flex;flex-direction:column;gap:22px}
+  ol.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:16px}
+  ol.steps li::before{content:counter(s,decimal-leading-zero);
+    font:500 12px/1.5 var(--mono);color:var(--signal);padding-top:3px}
+  ol.steps p{margin:0;color:var(--muted);font-size:15.5px}
+
+  /* ---- plain list, deliberately not cards ---- */
+  .plain{display:flex;flex-direction:column;gap:24px;margin-top:28px;
+    border-top:1px solid var(--line-soft);padding-top:28px}
+  .plain > div{display:grid;gap:5px}
+  .plain p{margin:0;color:var(--muted);font-size:15.5px}
+
+  .qa{margin-top:28px;display:flex;flex-direction:column}
+  .qa > div{padding:22px 0;border-top:1px solid var(--line-soft)}
+  .qa p{margin:0;color:var(--muted);font-size:15.5px}
+
+  .cta{margin-top:76px;background:var(--surface);border:1px solid var(--line);
+    border-radius:4px;padding:38px 32px}
+  .cta h2{margin-bottom:14px}
+  .btn{display:inline-block;margin-top:10px;background:var(--signal);color:var(--signal-ink);
+    text-decoration:none;font:600 15px/1 var(--sans);padding:15px 26px;border-radius:3px}
+  .btn:hover{filter:brightness(1.08)}
+  .btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+  .fineprint{font:400 13px/1.6 var(--mono);color:var(--muted);margin:18px 0 0}
+
+  footer{margin-top:72px;padding-top:24px;border-top:1px solid var(--line-soft);
+    font:400 13px/1.6 var(--mono);color:var(--muted)}
+  @media (max-width:520px){ .wrap{padding:44px 20px 72px} section{margin-top:56px} }
+</style>
+
+<div class="wrap">
+
+  <p class="eyebrow">LinkedIn content, set up and running</p>
+  <h1>Your first line is the whole post.</h1>
+  <p class="lede">Everything after it is hidden behind <em>see more</em>. That is the
+     entire game, and it is why posting sporadically does nothing for you.</p>
+
+  <div class="feed">
+    <div class="byline">
+      <div class="av"></div>
+      <div>
+        <div class="who">A post that gets read</div>
+        <div class="when">3h · Edited</div>
+      </div>
+    </div>
+    <p class="hook">We raised our price 40% and lost exactly one customer.</p>
+    <div class="fold"><span>see more — 94% stop here</span></div>
+    <div class="rest">
+      <p>He'd been with us since the beta at $49. I spent a week dreading that email.</p>
+      <p>The other 31 accounts renewed without a single question. Two of them asked
+         whether the new tier came with anything extra. It didn't.</p>
+      <p>The price was never the objection. I was.</p>
+      <p>What are you charging that you set two years ago and haven't touched since?</p>
+    </div>
+  </div>
+  <p class="caption">A post the engine wrote. The fold is where LinkedIn cuts you off.</p>
+
+  <section>
+    <h2>What this actually is</h2>
+    <p class="sub">A content engine configured to how you talk, connected to your LinkedIn
+       through the official API, publishing on the schedule you set.</p>
+    <p>Not a prompt library. Not a course. It is a system that runs on a server and
+       publishes whether or not you remembered it was Tuesday. You approve what goes
+       out, or you let it run — your call, and you can change your mind later.</p>
+    <p>It writes from a profile of you: your field, who you're talking to, how blunt
+       you are, and a list of words you would never say. That last part is what keeps
+       it from sounding like everyone else's AI.</p>
+  </section>
+
+  <section>
+    <h2>Three ways to buy it</h2>
+    <div class="tiers">
+      <div class="tier">
+        <span class="tag"></span>
+        <div class="price">$297</div>
+        <h3>Setup</h3>
+        <ul>
+          <li>Configured to your voice</li>
+          <li>30 posts generated for you</li>
+          <li>You publish them yourself</li>
+          <li>Yours to keep and run</li>
+        </ul>
+      </div>
+      <div class="tier pick">
+        <span class="tag">Most people</span>
+        <div class="price">$497</div>
+        <h3>Done for you</h3>
+        <ul>
+          <li>Everything in Setup</li>
+          <li>Connected to your LinkedIn</li>
+          <li>Publishing on a schedule</li>
+          <li>30 days of voice tuning</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <span class="tag"></span>
+        <div class="price">$297<small> /mo</small></div>
+        <h3>Managed</h3>
+        <ul>
+          <li>I review the queue weekly</li>
+          <li>Voice retuned as you shift</li>
+          <li>New topics added monthly</li>
+          <li>Cancel any month</li>
+        </ul>
+      </div>
+    </div>
+    <p class="fineprint">If the first ten posts aren't something you'd genuinely publish,
+       I refund you.</p>
+  </section>
+
+  <section>
+    <h2>How setup goes</h2>
+    <ol class="steps">
+      <li><div><h3>You send me your positioning</h3>
+        <p>What you do, who you sell to, and three posts from anyone whose writing you
+           respect. Fifteen minutes of your time.</p></div></li>
+      <li><div><h3>I build your profile</h3>
+        <p>Field, audience, tone, topics, and the banned-words list. This is the part
+           that decides whether the output sounds like you or like LinkedIn.</p></div></li>
+      <li><div><h3>You read thirty posts</h3>
+        <p>I generate them, throw out the weak ones, and send you what's left. You mark
+           what's wrong and I retune. Usually one round.</p></div></li>
+      <li><div><h3>It goes live</h3>
+        <p>You generate a token from your own LinkedIn account — I never touch your
+           password — and it starts publishing on your schedule.</p></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>What it won't do</h2>
+    <div class="plain">
+      <div>
+        <h3>It won't send connection requests or auto-comment</h3>
+        <p>Those need browser automation, which violates LinkedIn's terms and gets
+           accounts restricted. This uses the official posting API only.</p>
+      </div>
+      <div>
+        <h3>It won't invent numbers about your business</h3>
+        <p>The writing rules forbid fabricated statistics and made-up case studies. A
+           made-up figure challenged in your comments costs more than it earns.</p>
+      </div>
+      <div>
+        <h3>It won't make you go viral</h3>
+        <p>Nobody can sell you that honestly. What it does is remove the reason you
+           stopped posting, which is the actual problem.</p>
+      </div>
+      <div>
+        <h3>It won't replace you in the comments</h3>
+        <p>Replies are where the business comes from. Automating those is how people
+           can tell. That part stays yours.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Questions people ask</h2>
+    <div class="qa">
+      <div>
+        <h3>How is this different from just using ChatGPT?</h3>
+        <p>It isn't the writing — it's that it runs without you. ChatGPT needs you to
+           show up and prompt it. This publishes on a schedule whether you opened a
+           browser or not.</p>
+      </div>
+      <div>
+        <h3>Will people be able to tell it's AI?</h3>
+        <p>They'd be able to tell if it opened with "In today's fast-paced world."
+           The generator is explicitly blocked from every one of those tells, and you
+           read everything before it goes out.</p>
+      </div>
+      <div>
+        <h3>What does it cost to run after setup?</h3>
+        <p>Roughly $1.30 a month in API fees for daily posts with images, or about
+           twenty cents without them. There's no platform fee — it runs on your own
+           accounts.</p>
+      </div>
+      <div>
+        <h3>What if I want to stop?</h3>
+        <p>Revoke the token and it stops immediately. On Setup and Done-for-you you
+           keep the system either way; there's nothing to cancel.</p>
+      </div>
+      <div>
+        <h3>Do you need my LinkedIn password?</h3>
+        <p>No, and don't give it to anyone who asks. You generate an access token from
+           your own developer account and can revoke it whenever you want.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <h2>Want to see it in your voice first?</h2>
+    <p>Tell me what you do and who you sell to, and I'll send five posts written for
+       you before you pay anything. Keep them either way.</p>
+    <a class="btn" href="mailto:REPLACE-WITH-YOUR-EMAIL@example.com?subject=Five%20posts%20in%20my%20voice">Ask for five posts</a>
+    <p class="fineprint">Or reply to the message this link came from.</p>
+  </div>
+
+  <footer>
+    Posts are published through LinkedIn's official API. No scraping, no browser
+    automation, no purchased engagement.
+  </footer>
+
+</div>
