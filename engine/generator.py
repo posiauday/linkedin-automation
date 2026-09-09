@@ -89,6 +89,12 @@ be specific, cut the claim.
 in the realm of, it's not X, it's Y.
 - The post must be something the author would be comfortable being quoted on. No invented \
 statistics, no fake case studies, no fabricated client results.
+- Never put a URL in the post. LinkedIn suppresses posts containing external links by \
+roughly 60%. If a link is essential it goes in the first comment, not the post.
+- Write for dwell time, which is what the ranking actually measures. Short paragraphs \
+with blank lines between them hold a reader roughly 40% longer than one block of text. \
+Each paragraph should make the next one worth reading; a reader who stops halfway is \
+worth less than one who never started.
 
 You are given the author's profile and their recent post openings. Do not repeat the \
 structure or subject of a recent post."""

@@ -7,6 +7,9 @@ out of one repo, so it works as a product you sell, not just a script you use.
 Running cost: about **$1.30/month** per account. GitHub Actions does the hosting
 for free.
 
+> **Start with [RESEARCH.md](RESEARCH.md)** — what the evidence says works, and an
+> honest scoring of this repo against it, including what is still missing.
+>
 > **Trying to make money with this?** [GTM.md](GTM.md) has the market research,
 > pricing, funnel and channel plan for both revenue tracks — selling to
 > individuals, and licensing to agencies who run many client accounts. [SALES_PLAYBOOK.md](SALES_PLAYBOOK.md) has the
@@ -56,6 +59,8 @@ Tokens expire after 60 days. Refresh them or publishing stops silently.
 |---|---|
 | `run.py clients` | List configured clients and their post counts |
 | `run.py generate -c SLUG -n 5` | Write 5 posts to `linkedin_posts/SLUG/`, publish nothing |
+| `run.py carousel -c SLUG` | Generate a document carousel and render it to PDF |
+| `run.py metrics -c SLUG` | Pull reactions and comments for published posts |
 | `run.py list -c SLUG` | Show queued, published and failed posts |
 | `run.py approve -c SLUG --id ID` | Approve a post (omit `--id` to approve all queued) |
 | `run.py reject -c SLUG --id ID` | Un-approve a post |
@@ -160,6 +165,35 @@ engine/linkedin.py    initializeUpload → PUT bytes → create post
 The image upload is three separate API calls. Scripts that skip the first two
 post text only and never tell you — that is the most common way this breaks.
 
+### Carousels
+
+Document carousels are the highest-performing format on LinkedIn — roughly **6x
+the engagement of a text-only post**, because swiping is dwell time and dwell
+time is what the ranking measures.
+
+```bash
+python run.py carousel --client me --topic "what a price increase actually costs"
+```
+
+Claude writes 6-10 slides, Chromium renders them to a square PDF, and publishing
+uploads it through LinkedIn's Documents API as a native document post. Rendering
+needs Playwright (`pip install playwright && playwright install chromium`);
+everything else in the engine works without it.
+
+### Measuring results
+
+```bash
+python run.py metrics --client me
+```
+
+Pulls reactions and comments per published post and stores them on the record.
+`dashboard.py` then shows engagement per client and the measured carousel-vs-text
+lift **from your own account**, not from a blog post.
+
+This matters commercially: clients in 2026 drop providers who cannot show
+impact, and your own measured numbers are what move you up the pricing ladder in
+[SALES_PLAYBOOK.md](SALES_PLAYBOOK.md).
+
 ### Post quality
 
 Quality lives in two places, and neither is the code:
@@ -209,6 +243,7 @@ teardown.py             rewrite someone's post + explain the changes
 batch.py                whole prospect list -> samples + send worksheet
 dashboard.py            agency ops view across all clients
 engine/
+  carousel.py           carousel generation + PDF rendering
   config.py             settings + client profile loading
   generator.py          Claude post generation
   images.py             DALL-E
@@ -219,6 +254,7 @@ linkedin_posts/<slug>/  generated posts
 samples/                prospect sample pages and teardowns
 sales/index.html        the service sales page
 console/index.html      outreach desk (pipeline + drafting, hosted as an Artifact)
+RESEARCH.md             evidence audit + self-scoring + open gaps
 GTM.md                  market research, pricing, funnel, channels, ads
 SALES_PLAYBOOK.md       targeting, scripts, objections, delivery checklist
 SKILL.md                the writing rules, as a Claude skill

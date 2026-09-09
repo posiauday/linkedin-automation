@@ -36,6 +36,8 @@ def collect(rate: float) -> dict:
         cost = sum(p.cost_usd for p in posts)
         published = [p for p in posts if p.published]
         last = max((p.created_at for p in published), default="")
+        engagement = sum(p.engagement for p in published)
+        carousels = [p for p in published if p.kind == "carousel"]
 
         rows.append({
             "name": client.name,
@@ -45,6 +47,9 @@ def collect(rate: float) -> dict:
             "cost": cost,
             "total": len(posts),
             "last": last[:10] if last else "never",
+            "engagement": engagement,
+            "per_post": engagement / len(published) if published else 0.0,
+            "carousels": len(carousels),
         })
         awaiting += [(client, p) for p in posts if p.state == "queued"]
         spend += cost
@@ -52,6 +57,20 @@ def collect(rate: float) -> dict:
 
     awaiting.sort(key=lambda pair: pair[1].created_at)
     revenue = rate * len(rows)
+
+    # Format comparison, measured from this account rather than asserted from a
+    # blog post. Only meaningful once both formats have been measured.
+    every = [p for c in Client.load_all() for p in Store(c).published()]
+    car = [p for p in every if p.kind == "carousel" and p.measured_at]
+    txt = [p for p in every if p.kind != "carousel" and p.measured_at]
+    compare = None
+    if car and txt:
+        ca = sum(p.engagement for p in car) / len(car)
+        ta = sum(p.engagement for p in txt) / len(txt)
+        compare = {"carousel": ca, "text": ta,
+                   "ratio": (ca / ta) if ta else 0.0,
+                   "n_car": len(car), "n_txt": len(txt)}
+
     return {
         "rows": rows,
         "awaiting": awaiting,
@@ -59,6 +78,10 @@ def collect(rate: float) -> dict:
         "totals": totals,
         "revenue": revenue,
         "margin": revenue - spend,
+        "engagement": sum(r["engagement"] for r in rows),
+        "compare": compare,
+        "measured": sum(1 for p in every if p.measured_at),
+        "published_total": len(every),
     }
 
 
@@ -91,6 +114,8 @@ def client_row(row: dict) -> str:
   <td class="num{' warn' if c['queued'] else ''}">{c['queued']}</td>
   <td class="num{' bad' if c['error'] else ''}">{c['error']}</td>
   <td class="num">{row['last']}</td>
+  <td class="num">{row['engagement']}</td>
+  <td class="num">{row['per_post']:.1f}</td>
   <td class="num">${row['cost']:.4f}</td>
 </tr>"""
 
@@ -158,7 +183,8 @@ PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <div class="scroll"><table>
 <thead><tr><th>Client</th><th>Pipeline</th><th class="num">Published</th>
 <th class="num">Approved</th><th class="num">Queued</th><th class="num">Errors</th>
-<th class="num">Last post</th><th class="num">Spend</th></tr></thead>
+<th class="num">Last post</th><th class="num">Engagement</th>
+<th class="num">Per post</th><th class="num">Spend</th></tr></thead>
 <tbody>{clients}</tbody></table></div>
 <p class="key">
   <span><i style="background:var(--ok)"></i>published</span>
@@ -193,8 +219,17 @@ def main() -> int:
         tile("Awaiting review", str(t["queued"]),
              "needs approval" if t["queued"] else "all clear"),
         tile("Errors", str(t["error"]), "check the logs" if t["error"] else "none"),
+        tile("Engagement", str(data["engagement"]),
+             f"{data['measured']} of {data['published_total']} measured"
+             if data["published_total"] else "run: metrics"),
         tile("Generation spend", f"${data['spend']:.4f}", "all time, API only"),
     ]
+    if data["compare"]:
+        c = data["compare"]
+        tiles.append(tile(
+            "Carousel lift", f"{c['ratio']:.1f}x",
+            f"{c['carousel']:.0f} vs {c['text']:.0f} per post",
+        ))
     if args.rate:
         tiles.append(tile("Monthly margin", f"${data['margin']:,.2f}",
                           f"at ${args.rate:,.0f}/client"))

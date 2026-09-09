@@ -22,6 +22,22 @@ A post is three parts and nothing else:
 
 Then 3-5 hashtags. More than five reads as spam.
 
+## What the ranking actually measures
+
+Dwell time, not likes. A post held for 61 seconds or more sees around 15.6%
+engagement; one abandoned in under 3 seconds sees 1.2%. Everything below serves
+one goal: get the reader to the bottom.
+
+Three consequences worth memorising:
+
+- **Formatting is not decoration.** Short paragraphs with blank lines between
+  them hold a reader roughly 40% longer than the same words in one block.
+- **Never put a link in the post.** Posts carrying external links lose about 60%
+  of their reach. Put it in the first comment instead.
+- **Document carousels beat everything.** Around 6x the engagement of a
+  text-only post, because swiping is dwell time. If the idea has steps, make it
+  a carousel — see the carousel section below.
+
 ## Hard rules
 
 Never open with any of these, or a variant:
@@ -74,6 +90,22 @@ Rotate so the feed does not feel like one note:
 
 Avoid pure motivation and pure promotion. Both get scrolled past.
 
+## Carousels
+
+The highest-performing format on the platform: a multi-page PDF uploaded as a
+document post, which the feed renders as swipeable slides.
+
+- **6 to 10 slides.** Fewer feels thin, more loses people mid-swipe.
+- **Slide 1 is the hook**, not a title card. A specific claim, number or moment.
+- **Middle slides carry one idea each**, in an order that goes somewhere. Under
+  60 characters of headline, under 220 of body — a slide that cannot be read in
+  three seconds does not get read.
+- **The last slide lands the takeaway and asks for a comment.**
+- The caption introducing it still has to earn the click on its own.
+
+Reach for a carousel whenever the idea has steps, a sequence, or a
+before-and-after. Reach for text when it is a single observation or a story.
+
 ## Image prompts
 
 Describe an illustration, never text. LinkedIn images render small, and
@@ -91,3 +123,5 @@ illustration, generous whitespace, muted navy and warm grey, no text in image"
 - Would the author be comfortable being quoted on every sentence?
 - Does it repeat a post from the last month?
 - Read it aloud. Does it sound like a person talking?
+- Is there a link in the body? Move it to the first comment.
+- Would this be stronger as a carousel?

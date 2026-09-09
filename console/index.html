@@ -185,6 +185,8 @@
     <div><label for="f-niche">What they do</label><input id="f-niche" required placeholder="demand gen for B2B SaaS"></div>
     <div><label for="f-role">Role</label><input id="f-role" placeholder="Fractional CMO"></div>
     <div><label for="f-aud">Who they sell to</label><input id="f-aud" placeholder="Series A founders"></div>
+    <div style="grid-column:1/-1"><label for="f-trigger">Why now — what just happened for them?</label>
+      <input id="f-trigger" placeholder="posted about hiring last week / just raised a seed round / launched a podcast"></div>
     <div><label for="f-warm">Relationship</label>
       <select id="f-warm"><option value="cold">Cold</option><option value="warm">Warm — they know me</option></select></div>
     <div><button class="btn" type="submit">Add</button></div>
@@ -204,7 +206,12 @@
   "use strict";
 
   var STAGES = ["new", "drafted", "sent", "replied", "won", "lost"];
-  var FOLLOW_UP_DAYS = 2;
+  // Evidence: 2-3 touches is the range; the first follow-up alone adds 40-50%
+  // more replies. Past three, per-message reply rate drops.
+  var TOUCHES = [
+    { after: 2, label: "Follow up — add something new, do not just nudge" },
+    { after: 6, label: "Last touch — say you will leave it there" }
+  ];
   var DAILY_CAP = 25;
 
   var db = null, sample = null, unsub = null;
@@ -269,7 +276,8 @@
       "Name: " + p.name,
       p.role ? "Role: " + p.role : "",
       "Field: " + p.niche,
-      p.audience ? "They sell to: " + p.audience : ""
+      p.audience ? "They sell to: " + p.audience : "",
+      p.trigger ? "Why I am reaching out now: " + p.trigger : ""
     ].filter(Boolean).join("\n");
   }
 
@@ -295,12 +303,37 @@
       "whole message.\n" +
       (warm ? "I already know this person, so it can be familiar.\n"
             : "I do not know this person, so it must earn attention in the first line.\n") +
+      (p.trigger
+        ? "Open by referencing the specific thing that just happened for them, in my " +
+          "own words, so it is obvious this was written for them and not sent to a list. " +
+          "Do not quote it back verbatim or flatter them about it.\n"
+        : "") +
       "\nRules:\n- Under 90 words.\n- No pitch, no ask for a call.\n" +
       "- Name what they specifically work on, so it cannot read as a mass message.\n" +
       "- Give them an easy out, e.g. 'use them or don't'.\n" +
       "- Include the literal placeholder [LINK] where the sample page link goes.\n" +
       "- No emoji. No 'I hope this finds you well'. Plain, direct, human.\n\n" +
       "Reply with only the message text.",
+      { modelTier: "default" }
+    );
+    return r.text.trim();
+  }
+
+  async function draftFollowUp(p) {
+    var done = p.touches || 0;
+    var last = done + 1 >= TOUCHES.length;
+    var r = await sample(
+      "Write a short LinkedIn follow-up message.\n\n" + who(p) + "\n\n" +
+      "I already sent them five free posts written for them. They have not replied.\n" +
+      "This is follow-up " + (done + 1) + " of " + TOUCHES.length + ".\n\n" +
+      "Rules:\n- Under 60 words. Shorter than the first message.\n" +
+      "- Add something new. Never just 'bumping this' or 'circling back'.\n" +
+      "- No guilt, no fake urgency, no 'did you see my message'.\n" +
+      (last
+        ? "- This is the last one. Say plainly that I will leave it there, and mean it. " +
+          "Make it easy to say no without awkwardness.\n"
+        : "- Leave the door open without asking for anything.\n") +
+      "- No emoji.\n\nReply with only the message text.",
       { modelTier: "default" }
     );
     return r.text.trim();
@@ -352,10 +385,12 @@
     state.prospects.forEach(function (p) {
       if (p.stage === "new") out.push({ p: p, kind: "fresh", why: "Needs posts drafted" });
       else if (p.stage === "drafted") out.push({ p: p, kind: "fresh", why: "Drafted and ready to send" });
-      else if (p.stage === "sent" && !p.followedUp) {
+      else if (p.stage === "sent") {
         var d = daysSince(p.sentAt);
-        if (d !== null && d >= FOLLOW_UP_DAYS) {
-          out.push({ p: p, kind: "due", why: "Sent " + d + " days ago — one follow-up, then stop" });
+        var done = p.touches || 0;
+        if (d !== null && done < TOUCHES.length && d >= TOUCHES[done].after) {
+          out.push({ p: p, kind: "due",
+                     why: "Sent " + d + " days ago — " + TOUCHES[done].label });
         }
       } else if (p.stage === "replied" && !p.replyDraft) {
         out.push({ p: p, kind: "due", why: "They replied — draft your response" });
@@ -417,6 +452,7 @@
               var bits = [];
               if (p.posts && p.posts.length) bits.push(p.posts.length + " posts");
               if (p.dm) bits.push("DM");
+              if (p.touches) bits.push(p.touches + " follow-up" + (p.touches > 1 ? "s" : ""));
               return bits.length ? esc(bits.join(" · ")) : "—";
             })() + "</td></tr>";
         }).join("") + "</tbody></table></div>"
@@ -463,6 +499,21 @@
       (p.posts ? '<div class="row"><button class="btn sm ghost" data-copy="posts">Copy posts</button></div>' : "") +
       "</div>" +
 
+      (p.stage === "sent" && (p.touches || 0) < TOUCHES.length
+        ? '<div class="block"><h4>Follow-up ' + ((p.touches || 0) + 1) + " of " + TOUCHES.length +
+          (sample ? '<button class="btn sm ghost" data-act="followup">' +
+            (p.followUp ? "Redraft" : "Draft follow-up") + "</button>" : "") + "</h4>" +
+          '<p class="h">' + esc(TOUCHES[p.touches || 0].label) + "</p>" +
+          (busy("followup") ? '<p class="thinking">Drafting…</p>'
+            : p.followUp ? '<div class="out">' + esc(p.followUp) + "</div>"
+            : '<p class="thinking">Not drafted yet.</p>') +
+          (err("followup") ? '<p class="err">' + esc(err("followup")) + "</p>" : "") +
+          '<div class="row">' +
+          (p.followUp ? '<button class="btn sm ghost" data-copy="followUp">Copy</button>' +
+            '<button class="btn sm go" data-act="senttouch">I sent this</button>' : "") +
+          "</div></div>"
+        : "") +
+
       '<div class="block"><h4>Message' +
       (sample ? '<button class="btn sm ghost" data-act="dm">' +
         (p.dm ? "Redraft" : "Draft message") + "</button>" : "") + "</h4>" +
@@ -490,6 +541,12 @@
             '</div><div class="row"><button class="btn sm ghost" data-copy="replyDraft">Copy response</button></div>' : "") +
           "</div>"
         : "") +
+
+      '<div class="block"><h4>Why now</h4>' +
+      '<p class="h">A specific recent event roughly doubles reply rate against a ' +
+      'generic message. Leave it empty if there genuinely isn\'t one.</p>' +
+      '<textarea id="trigBox" placeholder="What just happened for them…">' + esc(p.trigger || "") + "</textarea>" +
+      '<div class="row"><button class="btn sm ghost" data-act="savetrigger">Save</button></div></div>' +
 
       '<div class="block"><h4>Notes</h4>' +
       '<textarea id="noteBox" placeholder="Anything you learned about them…">' + esc(p.notes || "") + "</textarea>" +
@@ -531,12 +588,22 @@
     if (a === "posts") run(p, "posts", draftPosts, "posts");
     else if (a === "dm") run(p, "dm", draftDM, "dm");
     else if (a === "replydraft") run(p, "replydraft", draftReply, "replyDraft");
+    else if (a === "followup") run(p, "followup", draftFollowUp, "followUp");
+    else if (a === "senttouch") {
+      p.touches = (p.touches || 0) + 1;
+      p.followUp = "";
+      p.lastTouchAt = new Date().toISOString();
+      save(p);
+    }
     else if (a === "sent") { p.stage = "sent"; p.sentAt = new Date().toISOString(); save(p); }
     else if (a === "savereply") {
       var box = document.getElementById("replyBox");
       p.reply = box ? box.value.trim() : "";
       if (p.reply && p.stage === "sent") p.stage = "replied";
       save(p);
+    } else if (a === "savetrigger") {
+      var tb = document.getElementById("trigBox");
+      p.trigger = tb ? tb.value.trim() : ""; save(p);
     } else if (a === "savenote") {
       var nb = document.getElementById("noteBox");
       p.notes = nb ? nb.value : ""; save(p);
@@ -559,7 +626,8 @@
     var g = function (id) { return document.getElementById(id).value.trim(); };
     var p = {
       id: uid(), name: g("f-name"), niche: g("f-niche"), role: g("f-role"),
-      audience: g("f-aud"), warmth: document.getElementById("f-warm").value,
+      audience: g("f-aud"), trigger: g("f-trigger"),
+      warmth: document.getElementById("f-warm").value,
       stage: "new", createdAt: new Date().toISOString()
     };
     if (!p.name || !p.niche) return;

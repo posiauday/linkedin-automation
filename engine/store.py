@@ -41,6 +41,12 @@ class Post:
     linkedin_urn: str | None = None
     error: str | None = None
     cost_usd: float = 0.0
+    kind: str = "text"           # "text" or "carousel"
+    pdf_path: str | None = None
+    doc_title: str = ""
+    reactions: int = 0
+    comments: int = 0
+    measured_at: str | None = None
 
     @property
     def full_text(self) -> str:
@@ -49,6 +55,10 @@ class Post:
         if tags:
             parts.append(tags)
         return "\n\n".join(p for p in parts if p)
+
+    @property
+    def engagement(self) -> int:
+        return self.reactions + self.comments
 
     @property
     def state(self) -> str:
@@ -103,6 +113,9 @@ class Store:
             if post.id == post_id or post.id.startswith(post_id):
                 return post
         return None
+
+    def published(self) -> list[Post]:
+        return [p for p in self.load_all() if p.published and p.linkedin_urn]
 
     def pending_publish(self) -> list[Post]:
         """Posts eligible to go out, oldest first."""
