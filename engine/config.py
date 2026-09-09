@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -20,6 +21,9 @@ except ImportError:
 
 CLIENTS_DIR = REPO_ROOT / "clients"
 OUTPUT_ROOT = REPO_ROOT / "linkedin_posts"
+
+# A slug becomes a path segment in two places, so it may not escape its parent.
+SLUG_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
 
 
 def _flag(name: str, default: bool) -> bool:
@@ -85,6 +89,11 @@ class Client:
 
     @classmethod
     def load(cls, slug: str) -> "Client":
+        if not SLUG_PATTERN.match(slug):
+            raise ValueError(
+                f"Invalid client slug {slug!r}. Use lowercase letters, digits, "
+                "hyphens and underscores only."
+            )
         path = CLIENTS_DIR / f"{slug}.yaml"
         if not path.exists():
             available = ", ".join(c.stem for c in sorted(CLIENTS_DIR.glob("*.yaml"))) or "none"

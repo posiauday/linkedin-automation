@@ -231,7 +231,9 @@ def main() -> int:
         f'<td class="v">{html.escape(c["why"])}</td></tr>'
         for c in data.get("changes", [])
     )
-    who = args.author or "this post"
+    # Escaped once here: the author name is routinely pasted from a LinkedIn
+    # profile, so it is untrusted input on a page that gets hosted publicly.
+    who = html.escape(args.author or "this post")
     page = PAGE.format(
         title=f"Teardown: {who}",
         eyebrow="Post teardown" if args.public else "Written for you, no pitch",

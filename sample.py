@@ -115,6 +115,9 @@ def render_body(text: str) -> str:
 
 
 def build_page(prospect: str, niche: str, posts: list[Post]) -> str:
+    # Prospect names are pasted from LinkedIn profiles, so treat them as
+    # untrusted and escape once before they reach any part of the template.
+    safe_prospect = html.escape(prospect)
     cards = "\n".join(
         CARD.format(
             n=i,
@@ -126,8 +129,8 @@ def build_page(prospect: str, niche: str, posts: list[Post]) -> str:
         for i, p in enumerate(posts, 1)
     )
     return PAGE.format(
-        title=f"5 LinkedIn posts for {prospect}",
-        who=html.escape(prospect),
+        title=f"5 LinkedIn posts for {safe_prospect}",
+        who=safe_prospect,
         heading="Five posts you could publish this week",
         lede=html.escape(
             f"Drafted for {prospect} on {niche}. Copy any of them straight into LinkedIn."
